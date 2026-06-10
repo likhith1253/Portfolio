@@ -34,7 +34,7 @@ export interface TechIconConfig {
 }
 
 export const techIconMap: Record<string, TechIconConfig> = {
-  // Frontend
+  // Frontend - Technologies with official logos
   "React": { icon: SiReact, label: "React" },
   "Next.js": { icon: SiNextdotjs, label: "Next.js" },
   "JavaScript": { icon: SiJavascript, label: "JavaScript" },
@@ -43,15 +43,14 @@ export const techIconMap: Record<string, TechIconConfig> = {
   "CSS": { icon: SiCss, label: "CSS" },
   "Tailwind CSS": { icon: SiTailwindcss, label: "Tailwind CSS" },
   
-  // Backend
+  // Backend - Technologies with official logos
   "Node.js": { icon: SiNodedotjs, label: "Node.js" },
   "Express.js": { icon: SiExpress, label: "Express.js" },
   "FastAPI": { icon: SiFastapi, label: "FastAPI" },
   "Django": { icon: SiDjango, label: "Django" },
-  "REST APIs": { icon: SiNodedotjs, label: "REST APIs" },
-  "WebSockets": { icon: SiSocketdotio, label: "WebSockets" },
+  "Socket.io": { icon: SiSocketdotio, label: "Socket.io" },
   
-  // Databases
+  // Databases - Technologies with official logos
   "PostgreSQL": { icon: SiPostgresql, label: "PostgreSQL" },
   "MySQL": { icon: SiMysql, label: "MySQL" },
   "MongoDB": { icon: SiMongodb, label: "MongoDB" },
@@ -60,15 +59,13 @@ export const techIconMap: Record<string, TechIconConfig> = {
   "ChromaDB": { icon: SiMongodb, label: "ChromaDB" },
   "Redis": { icon: SiRedis, label: "Redis" },
   
-  // Analytics & AI
+  // Analytics & AI - Technologies with official logos
   "SQL": { icon: SiPostgresql, label: "SQL" },
   "Pandas": { icon: SiPandas, label: "Pandas" },
   "NumPy": { icon: SiPython, label: "NumPy" },
-  "Power BI": { icon: SiPython, label: "Power BI" },
   "Gemini API": { icon: SiPython, label: "Gemini API" },
-  "Machine Learning": { icon: SiPython, label: "Machine Learning" },
   
-  // Tools
+  // Tools - Technologies with official logos
   "Git": { icon: SiGit, label: "Git" },
   "Docker": { icon: SiDocker, label: "Docker" },
   "GitHub Actions": { icon: SiGithub, label: "GitHub Actions" },
@@ -77,22 +74,10 @@ export const techIconMap: Record<string, TechIconConfig> = {
   "Render": { icon: SiRender, label: "Render" },
   "Linux": { icon: SiLinux, label: "Linux" },
   
-  // Concepts - using generic icons for concepts
-  "Database Design": { icon: SiPostgresql, label: "Database Design" },
-  "Schema Modeling": { icon: SiPrisma, label: "Schema Modeling" },
-  "Normalization": { icon: SiPostgresql, label: "Normalization" },
-  "Denormalization": { icon: SiMongodb, label: "Denormalization" },
-  "JWT Authentication": { icon: SiFastapi, label: "JWT Authentication" },
-  "RBAC": { icon: SiDjango, label: "RBAC" },
-  "Microservices": { icon: SiNodedotjs, label: "Microservices" },
-  "System Design": { icon: SiNodedotjs, label: "System Design" },
-  "Vector Databases": { icon: SiMongodb, label: "Vector Databases" },
-  "AI-Powered Applications": { icon: SiPython, label: "AI-Powered Applications" },
-  "Full Stack Engineering": { icon: SiReact, label: "Full Stack Engineering" },
-  "Database Architecture": { icon: SiPostgresql, label: "Database Architecture" },
-  
-  // Additional technologies
-  "Socket.io": { icon: SiSocketdotio, label: "Socket.io" },
+  // Concepts - NO ICONS (display as text-only tags)
+  // Database Design, Schema Modeling, Normalization, Denormalization, 
+  // JWT Authentication, RBAC, Microservices, System Design, 
+  // Machine Learning, Vector Databases, etc. - intentionally left out
 };
 
 export function getTechIcon(techName: string): TechIconConfig | null {
