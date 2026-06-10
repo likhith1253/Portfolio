@@ -8,6 +8,7 @@ import { certifications } from "@/data/certifications";
 import { achievements } from "@/data/achievements";
 import { opensource } from "@/data/opensource";
 import MissionPathway from "@/components/MissionPathway";
+import { getTechIcon } from "@/lib/tech-icons";
 
 // ─── Config ────────────────────────────────────────────────────────────────────
 const GITHUB_USERNAME = "likhithponnada";
@@ -393,14 +394,19 @@ export default function Home() {
 
                   {project.technologies.length > 0 ? (
                     <div className="flex flex-wrap gap-2 pt-1">
-                      {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                      {project.technologies.map((tech) => {
+                        const techIcon = getTechIcon(tech);
+                        const IconComponent = techIcon?.icon;
+                        return (
+                          <span
+                            key={tech}
+                            className="inline-flex items-center gap-1.5 px-2 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
+                          >
+                            {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                            {tech}
+                          </span>
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -660,15 +666,20 @@ export default function Home() {
                   {cat.category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {cat.items.map((item) => (
-                    <span
-                      key={item}
-                      className="px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
-                      data-testid={`skill-chip-${item.toLowerCase().replace(/ /g, "-")}`}
-                    >
-                      {item}
-                    </span>
-                  ))}
+                  {cat.items.map((item) => {
+                    const techIcon = getTechIcon(item);
+                    const IconComponent = techIcon?.icon;
+                    return (
+                      <span
+                        key={item}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
+                        data-testid={`skill-chip-${item.toLowerCase().replace(/ /g, "-")}`}
+                      >
+                        {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                        {item}
+                      </span>
+                    );
+                  })}
                 </div>
               </motion.div>
             ))}
@@ -948,14 +959,19 @@ export default function Home() {
                       Skills Demonstrated
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {cert.skillsDemonstrated.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-2.5 py-1 bg-primary/10 text-primary font-mono text-xs rounded-sm border border-primary/30"
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                      {cert.skillsDemonstrated.map((skill) => {
+                        const techIcon = getTechIcon(skill);
+                        const IconComponent = techIcon?.icon;
+                        return (
+                          <span
+                            key={skill}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary font-mono text-xs rounded-sm border border-primary/30"
+                          >
+                            {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                            {skill}
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -1028,14 +1044,19 @@ export default function Home() {
                           Technologies
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {contrib.technologies.map((tool) => (
-                            <span
-                              key={tool}
-                              className="px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
-                            >
-                              {tool}
-                            </span>
-                          ))}
+                          {contrib.technologies.map((tool) => {
+                            const techIcon = getTechIcon(tool);
+                            const IconComponent = techIcon?.icon;
+                            return (
+                              <span
+                                key={tool}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
+                              >
+                                {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                                {tool}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
