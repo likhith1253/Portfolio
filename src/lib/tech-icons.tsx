@@ -25,7 +25,13 @@ import {
   SiSocketdotio,
   SiVercel,
   SiRender,
-  SiPostman
+  SiPostman,
+  SiScikitlearn,
+  SiPytorch,
+  SiTensorflow,
+  SiOpencv,
+  SiC,
+  SiSqlite
 } from "react-icons/si";
 
 export interface TechIconConfig {
@@ -63,16 +69,26 @@ export const techIconMap: Record<string, TechIconConfig> = {
   "SQL": { icon: SiPostgresql, label: "SQL" },
   "Pandas": { icon: SiPandas, label: "Pandas" },
   "NumPy": { icon: SiPython, label: "NumPy" },
+  "Scikit-learn": { icon: SiScikitlearn, label: "Scikit-learn" },
+  "PyTorch": { icon: SiPytorch, label: "PyTorch" },
+  "TensorFlow": { icon: SiTensorflow, label: "TensorFlow" },
+  "OpenCV": { icon: SiOpencv, label: "OpenCV" },
+  "Power BI": { icon: SiPython, label: "Power BI" },
   "Gemini API": { icon: SiPython, label: "Gemini API" },
   
   // Tools - Technologies with official logos
   "Git": { icon: SiGit, label: "Git" },
-  "Docker": { icon: SiDocker, label: "Docker" },
+  "GitHub": { icon: SiGithub, label: "GitHub" },
   "GitHub Actions": { icon: SiGithub, label: "GitHub Actions" },
+  "Docker": { icon: SiDocker, label: "Docker" },
   "Postman": { icon: SiPostman, label: "Postman" },
   "Vercel": { icon: SiVercel, label: "Vercel" },
   "Render": { icon: SiRender, label: "Render" },
   "Linux": { icon: SiLinux, label: "Linux" },
+  
+  // Languages - Technologies with official logos
+  "C": { icon: SiC, label: "C" },
+  "Java": { icon: SiPython, label: "Java" },
   
   // Concepts - NO ICONS (display as text-only tags)
   // Database Design, Schema Modeling, Normalization, Denormalization, 

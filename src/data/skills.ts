@@ -11,19 +11,23 @@ export const skills: SkillCategory[] = [
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express.js", "FastAPI", "Django", "REST APIs", "WebSockets"],
+    items: ["Node.js", "Express.js", "FastAPI", "Django", "REST APIs", "WebSockets", "Socket.io", "Yjs"],
   },
   {
     category: "Databases",
-    items: ["PostgreSQL", "MySQL", "MongoDB", "Prisma", "Firebase", "ChromaDB"],
+    items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Prisma", "ChromaDB", "SQL"],
   },
   {
     category: "Analytics & AI",
-    items: ["SQL", "Pandas", "NumPy", "Power BI", "Gemini API"],
+    items: ["Python", "Pandas", "NumPy", "Scikit-learn", "PyTorch", "TensorFlow", "OpenCV", "Power BI", "Gemini API"],
   },
   {
     category: "Tools",
-    items: ["Git", "Docker", "GitHub Actions", "Postman", "Vercel", "Render"],
+    items: ["Git", "GitHub", "GitHub Actions", "Docker", "Postman", "Vercel", "Render"],
+  },
+  {
+    category: "Languages",
+    items: ["Python", "JavaScript", "Java", "C", "TypeScript"],
   },
   {
     category: "Concepts",
@@ -32,8 +36,11 @@ export const skills: SkillCategory[] = [
       "Schema Modeling",
       "Normalization",
       "Denormalization",
-      "JWT Authentication",
+      "System Design",
+      "Machine Learning",
+      "Vector Databases",
       "RBAC",
+      "JWT Authentication",
       "Microservices",
     ],
   },

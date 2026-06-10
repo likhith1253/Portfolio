@@ -216,17 +216,265 @@ Administrative entities, user accounts, subscriptions, API keys, analytics recor
     demo: "https://censusgrid.vercel.app/",
   },
   {
-    name: "Environment Spatial Understanding Assistant (ESUA)",
-    summary: "ESUA is a real-time computer vision assistant that moves beyond simple object detection by understanding spatial relationships between detected objects.\n\nThe system continuously analyzes live camera feeds, identifies contextual risks, and generates human-readable safety alerts when potentially dangerous situations are detected.",
-    objective: "Build a real-time vision system capable of understanding environmental context and identifying safety risks based on relationships between objects rather than detecting objects in isolation.",
-    problem: "Most object detection systems stop at identifying what is present in an image.\n\nHowever, many real-world hazards emerge from interactions between objects.\n\nFor example:\n\n* Liquids near electronics\n* Flammable materials near heat sources\n* Hazardous object proximity\n\nTraditional object detection alone cannot reason about these risks.",
-    solution: "Built a real-time spatial reasoning pipeline that combines object detection, temporal filtering, spatial analysis, and rule-based risk assessment.\n\nThe system continuously evaluates detected objects and their relationships to proactively identify safety concerns before incidents occur.",
+    name: "Movie Intelligence Engine",
+    summary: "An intelligent recommendation engine capable of understanding contextual similarity using vector embeddings, semantic search, and hybrid retrieval on a 5000+ movie dataset.",
+    objective: "Build a production-ready recommendation system that demonstrates practical vector database capabilities, semantic search workflows, and embedding-powered retrieval systems.",
+    problem: "Traditional recommendation systems rely heavily on metadata and keyword matching, often failing to capture semantic relationships between movies. Vector databases and embedding models offer powerful alternatives but require understanding of indexing strategies, similarity search algorithms, and hybrid retrieval patterns.",
+    solution: `Built a comprehensive movie recommendation system using ChromaDB vector databases and transformer-based embeddings.
+
+The system implements:
+- Semantic search using sentence transformer embeddings
+- HNSW indexing for scalable approximate nearest neighbor search
+- Hybrid retrieval combining vector similarity with metadata filtering
+- Interactive CLI for querying and benchmarking
+- CRUD operations for movie data management
+- Advanced filtering capabilities
+- Query performance benchmarking framework`,
+    technologies: [
+      "Python",
+      "ChromaDB",
+      "Sentence Transformers",
+      "Pandas",
+      "NumPy",
+      "Scikit-learn"
+    ],
+    techStackDetails: [
+      { category: "Core", items: "Python, Pandas, NumPy" },
+      { category: "Vector Database", items: "ChromaDB, HNSW Indexing" },
+      { category: "Embeddings", items: "Sentence Transformers, All-MiniLM-L6-v2" },
+      { category: "Search", items: "Semantic Search, ANN Search, Hybrid Retrieval" },
+      { category: "Interface", items: "Interactive CLI, Query Benchmarking" }
+    ],
+    highlightSection: {
+      title: "Vector Databases & Semantic Search",
+      content: "A major focus of this project was understanding how vector databases operate in practice, including embedding generation, indexing strategies, similarity search algorithms, and hybrid retrieval patterns that combine vector similarity with structured metadata.",
+      list: [
+        "ChromaDB Integration",
+        "HNSW Indexing",
+        "Semantic Retrieval",
+        "Metadata Filtering",
+        "Hybrid Search",
+        "Query Benchmarking",
+        "CRUD Operations",
+        "Recommendation Engine Architecture"
+      ],
+    },
+    keyFeatures: [
+      "5000+ movie dataset",
+      "Semantic similarity search",
+      "Vector embeddings with sentence transformers",
+      "HNSW approximate nearest neighbor indexing",
+      "Metadata-based filtering",
+      "Hybrid retrieval (vector + metadata)",
+      "Interactive CLI interface",
+      "Query performance benchmarking",
+      "CRUD operations for data management",
+      "Advanced filtering capabilities",
+      "Recommendation pipelines"
+    ],
+    technicalChallenges: [
+      { id: "01", title: "Embedding Generation Strategy", description: `Selecting the right embedding model was critical for capturing semantic relationships between movie descriptions.
+
+Evaluated multiple sentence transformer models and selected All-MiniLM-L6-v2 for its balance between embedding quality, inference speed, and resource requirements.` },
+      { id: "02", title: "HNSW Index Configuration", description: `HNSW (Hierarchical Navigable Small World) indexing enables scalable approximate nearest neighbor search.
+
+Tuned index parameters including ef_construction and M to balance query accuracy against index build time and memory usage.` },
+      { id: "03", title: "Hybrid Retrieval Design", description: `Pure vector search can miss relevant results when metadata matters.
+
+Implemented hybrid retrieval that combines vector similarity scores with structured metadata filters, allowing users to constrain results by genre, year, rating, and other attributes.` },
+      { id: "04", title: "Query Benchmarking Framework", description: `Built a benchmarking system to measure query performance across different index configurations and dataset sizes.
+
+This provided practical understanding of how indexing parameters affect retrieval speed and accuracy.` },
+      { id: "05", title: "CLI Interaction Design", description: `Designed an interactive CLI that allows users to explore the system without requiring a web interface.
+
+Supports natural language queries, filtering options, result ranking, and performance metrics display.` }
+    ],
+    architectureDecisions: [
+      { id: "01", title: "ChromaDB over Custom Implementation", description: `Rather than building vector indexing from scratch, used ChromaDB to leverage production-tested indexing algorithms and query optimization.
+
+This allowed focus on application logic rather than low-level vector operations.` },
+      { id: "02", title: "Sentence Transformers over Word Embeddings", description: `Sentence-level embeddings capture contextual meaning better than word-level embeddings.
+
+Selected sentence transformer models pre-trained on semantic similarity tasks for better recommendation quality.` },
+      { id: "03", title: "HNSW over Exact Search", description: `For datasets beyond a few thousand records, exact nearest neighbor search becomes impractical.
+
+HNSW provides approximate results with tunable accuracy-speed trade-offs, making it suitable for real-time recommendation scenarios.` },
+      { id: "04", title: "Hybrid over Vector-Only", description: `Pure vector search can return results that are semantically similar but contextually inappropriate.
+
+Hybrid retrieval ensures results satisfy both semantic similarity and business constraints.` },
+      { id: "05", title: "CLI over Web Interface", description: `The CLI was chosen to focus engineering effort on backend vector operations rather than frontend development.
+
+This allowed deeper exploration of vector database capabilities within the project scope.` }
+    ],
+    engineeringTakeaways: [
+      "Learned how vector databases store and retrieve high-dimensional embeddings.",
+      "Gained practical experience with HNSW indexing and ANN search algorithms.",
+      "Developed understanding of embedding model selection and evaluation.",
+      "Improved knowledge of hybrid retrieval patterns combining vector and structured search.",
+      "Built benchmarking frameworks for performance measurement.",
+      "Learned how to design CLI interfaces for data exploration.",
+      "Developed experience with metadata filtering in vector search contexts."
+    ],
+    impactMetrics: [
+      "5000+ Movie Dataset",
+      "Semantic Retrieval Engine",
+      "HNSW Indexing",
+      "Hybrid Search Pipeline",
+      "Query Benchmarking Framework",
+      "Interactive CLI",
+      "CRUD Operations",
+      "Advanced Filtering"
+    ],
+    recruiterFocus: [
+      "Vector Databases",
+      "AI Infrastructure",
+      "Retrieval Systems",
+      "Search Systems",
+      "Embedding Engineering",
+      "Data Modeling",
+      "Python Development",
+      "Semantic Search"
+    ],
+    github: "https://github.com/likhith1253/Movie_Recommendation_System",
+    demo: "",
+  },
+  {
+    name: "MT-Dynamics",
+    summary: "A modular pipeline combining classical image processing techniques with a fine-tuned U-Net segmentation model for automated microtubule tracing and dynamics analysis from fluorescence microscopy videos.",
+    objective: "Build an automated analysis pipeline capable of extracting biological metrics such as growth velocity and catastrophe frequency from fluorescence microscopy videos, reducing manual analysis time for researchers.",
+    problem: "Researchers often spend significant time manually analyzing microtubule dynamics from fluorescence microscopy videos. Low contrast, biological noise, complex filament structures, and tracking consistency make automated analysis challenging. Manual analysis is time-consuming and prone to human error.",
+    solution: `Built a modular pipeline combining classical image processing techniques with a fine-tuned U-Net segmentation model for automated microtubule tracing and dynamics analysis.
+
+The pipeline implements:
+- Frangi filtering for vessel enhancement
+- Otsu thresholding for binary segmentation
+- Skeletonization for filament centerline extraction
+- Pseudo-label generation for deep learning training
+- U-Net segmentation for accurate boundary detection
+- Biological metric extraction (growth velocity, catastrophe frequency)
+- Interactive Streamlit dashboard for visualization`,
     technologies: [
       "Python",
       "OpenCV",
-      "YOLOv8",
-      "Ultralytics"
+      "PyTorch",
+      "scikit-image",
+      "Streamlit",
+      "NumPy"
     ],
+    techStackDetails: [
+      { category: "Core", items: "Python, NumPy" },
+      { category: "Image Processing", items: "OpenCV, scikit-image" },
+      { category: "Deep Learning", items: "PyTorch, U-Net" },
+      { category: "Classical CV", items: "Frangi Filtering, Otsu Thresholding, Skeletonization" },
+      { category: "Interface", items: "Streamlit Dashboard" }
+    ],
+    highlightSection: {
+      title: "Computer Vision & Scientific Computing",
+      content: "A major focus of this project was understanding how classical image processing techniques can be combined with deep learning to solve scientific problems in biological research.",
+      list: [
+        "Frangi Vessel Enhancement",
+        "Otsu Thresholding",
+        "Skeletonization",
+        "Pseudo-Label Generation",
+        "U-Net Segmentation",
+        "Biological Metric Extraction",
+        "Interactive Dashboard",
+        "Pipeline Engineering"
+      ],
+    },
+    keyFeatures: [
+      "Automated microtubule tracing",
+      "Growth velocity calculation",
+      "Catastrophe frequency measurement",
+      "Frangi filtering for low-contrast enhancement",
+      "Otsu thresholding for segmentation",
+      "Skeletonization for centerline extraction",
+      "Pseudo-label generation workflow",
+      "U-Net deep learning segmentation",
+      "Interactive Streamlit dashboard",
+      "Biological metric visualization",
+      "Noise reduction techniques",
+      "Feature extraction from microscopy data"
+    ],
+    technicalChallenges: [
+      { id: "01", title: "Low Contrast Microscopy", description: `Fluorescence microscopy images often have low signal-to-noise ratios and poor contrast.
+
+Implemented Frangi filtering to enhance tubular structures and improve filament visibility before segmentation.` },
+      { id: "02", title: "Segmentation Accuracy", description: `Accurate microtubule boundary detection is critical for reliable metric extraction.
+
+Combined classical thresholding with deep learning segmentation to improve accuracy over single-method approaches.` },
+      { id: "03", title: "Biological Noise Reduction", description: `Microscopy images contain various noise sources including background fluorescence and imaging artifacts.
+
+Applied preprocessing techniques including Gaussian filtering and morphological operations to reduce noise while preserving filament structures.` },
+      { id: "04", title: "Pseudo-Label Generation", description: `Deep learning models require labeled training data, but manual annotation of microscopy images is time-consuming.
+
+Developed a pseudo-label generation pipeline using classical image processing to create training data for the U-Net model.` },
+      { id: "05", title: "Tracking Consistency", description: `Microtubules change over time, requiring consistent tracking across video frames.
+
+Implemented tracking algorithms that maintain filament identity and handle appearance/disappearance events.` }
+    ],
+    architectureDecisions: [
+      { id: "01", title: "Hybrid Classical + Deep Learning", description: `Rather than relying solely on deep learning, combined classical image processing with neural networks.
+
+Classical methods provide robust preprocessing and pseudo-labeling, while deep learning improves final segmentation accuracy.` },
+      { id: "02", title: "Modular Pipeline Architecture", description: `The pipeline was designed as modular components that can be independently tested and optimized.
+
+This allows individual algorithm improvements without requiring complete pipeline rewrites.` },
+      { id: "03", title: "U-Net for Segmentation", description: `U-Net architecture was selected for its effectiveness in biomedical image segmentation tasks.
+
+The encoder-decoder structure preserves spatial information while learning hierarchical features.` },
+      { id: "04", title: "Streamlit for Visualization", description: `Streamlit was chosen for rapid dashboard development without requiring frontend expertise.
+
+This allowed focus on computer vision algorithms rather than web application development.` },
+      { id: "05", title: "Pseudo-Label Workflow", description: `Instead of requiring manual annotation, built a pipeline to generate training labels using classical methods.
+
+This enabled deep learning integration without extensive manual labeling effort.` }
+    ],
+    engineeringTakeaways: [
+      "Learned how classical image processing techniques complement deep learning.",
+      "Gained practical experience with U-Net architecture for biomedical segmentation.",
+      "Developed understanding of pseudo-label generation workflows.",
+      "Improved knowledge of noise reduction techniques in scientific imaging.",
+      "Built modular pipelines for scientific computing applications.",
+      "Learned how to extract meaningful biological metrics from image data.",
+      "Developed experience with interactive dashboard development using Streamlit."
+    ],
+    impactMetrics: [
+      "Automated Analysis Pipeline",
+      "Hybrid Classical + Deep Learning Workflow",
+      "Interactive Dashboard",
+      "Biological Metric Extraction",
+      "Growth Velocity Calculation",
+      "Catastrophe Frequency Measurement",
+      "Streamlit Visualization",
+      "Noise Reduction Pipeline"
+    ],
+    recruiterFocus: [
+      "Computer Vision",
+      "Deep Learning",
+      "Scientific ML",
+      "Data Processing",
+      "Pipeline Engineering",
+      "Image Processing",
+      "PyTorch",
+      "OpenCV"
+    ],
+    github: "https://github.com/likhith1253/MT-Dynamics",
+    demo: "",
+  },
+  {
+    name: "ESUA",
+    summary: "A real-time spatial reasoning assistant that analyzes webcam feeds, performs object detection using YOLOv8, and evaluates proximity relationships between objects.",
+    objective: "Create a system capable of understanding spatial relationships between detected objects and proactively identifying hazards.",
+    problem: "Object detection alone does not provide contextual awareness.",
+    solution: "Built a real-time spatial reasoning assistant that analyzes webcam feeds, performs object detection using YOLOv8, and evaluates proximity relationships between objects.",
+    technologies: [
+      "Python",
+      "YOLOv8",
+      "OpenCV"
+    ],
+    challenges: "Implemented temporal aggregation, spatial reasoning, risk heuristics, and human-readable warning generation to detect situations such as liquids placed near electronics and other safety risks.",
+    results: "Successfully detected situations such as liquids placed near electronics and other safety risks.",
     techStackDetails: [
       { category: "Programming", items: "Python" },
       { category: "Computer Vision", items: "OpenCV" },
@@ -297,30 +545,6 @@ Administrative entities, user accounts, subscriptions, API keys, analytics recor
       footer: "The emphasis is on understanding relationships between objects rather than identifying objects individually."
     },
     github: "https://github.com/likhith1253/ESUA",
-    demo: "",
-  },
-  {
-    name: "",
-    summary: "",
-    objective: "",
-    problem: "",
-    solution: "",
-    technologies: [],
-    challenges: "",
-    results: "",
-    github: "",
-    demo: "",
-  },
-  {
-    name: "",
-    summary: "",
-    objective: "",
-    problem: "",
-    solution: "",
-    technologies: [],
-    challenges: "",
-    results: "",
-    github: "",
     demo: "",
   },
 ];

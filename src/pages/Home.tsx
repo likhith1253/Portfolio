@@ -11,12 +11,12 @@ import MissionPathway from "@/components/MissionPathway";
 import { getTechIcon } from "@/lib/tech-icons";
 
 // ─── Config ────────────────────────────────────────────────────────────────────
-const GITHUB_USERNAME = "likhithponnada";
+const GITHUB_USERNAME = "likhith1253";
 
 const CONTACT = {
   github: `https://github.com/${GITHUB_USERNAME}`,
   linkedin: "https://linkedin.com/in/likhith-ponnada",
-  email: "likhithponnada@gmail.com",
+  email: "plnlikhith@gmail.com",
   resume: "/documents/Resume(full_stack).pdf",
 };
 
