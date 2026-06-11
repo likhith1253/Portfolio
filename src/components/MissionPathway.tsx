@@ -191,7 +191,7 @@ export default function MissionPathway() {
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {type === "github" ? (
-                                  <Github className="w-3.5 h-3.5" />
+                                  <SiGithub className="w-3.5 h-3.5" />
                                 ) : (
                                   <ExternalLink className="w-3.5 h-3.5" />
                                 )}

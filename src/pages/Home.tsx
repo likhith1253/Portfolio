@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { Github, Mail, Linkedin, FileText, ExternalLink, ChevronRight } from "lucide-react";
+import { Mail, FileText, ExternalLink, ChevronRight } from "lucide-react";
+import { SiGithub } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
@@ -402,7 +404,7 @@ export default function Home() {
                             key={tech}
                             className="inline-flex items-center gap-1.5 px-2 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
                           >
-                            {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                            {IconComponent && <IconComponent className="w-3.5 h-3.5" style={{ color: techIcon?.color || 'currentColor' }} />}
                             {tech}
                           </span>
                         );
@@ -430,7 +432,7 @@ export default function Home() {
                         data-testid={`link-project-${i}-source`}
                         className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm transition-colors"
                       >
-                        <Github className="w-4 h-4" /> Source
+                        <SiGithub className="w-4 h-4" /> Source
                       </a>
                     ) : (
                       <span className="font-mono text-xs text-muted-foreground/25">
@@ -675,7 +677,7 @@ export default function Home() {
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
                         data-testid={`skill-chip-${item.toLowerCase().replace(/ /g, "-")}`}
                       >
-                        {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                        {IconComponent && <IconComponent className="w-3.5 h-3.5" style={{ color: techIcon?.color || 'currentColor' }} />}
                         {item}
                       </span>
                     );
@@ -713,7 +715,7 @@ export default function Home() {
                   className="font-mono text-xs text-primary hover:underline flex items-center gap-1.5"
                   data-testid="link-github-profile"
                 >
-                  <Github className="w-3 h-3" />
+                  <SiGithub className="w-3 h-3" />
                   @{GITHUB_USERNAME}
                 </a>
               </div>
@@ -774,7 +776,7 @@ export default function Home() {
                 className="flex items-center gap-2 text-sm text-primary hover:underline"
                 data-testid="link-github-visit"
               >
-                <Github className="w-4 h-4" /> View on GitHub
+                <SiGithub className="w-4 h-4" /> View on GitHub
               </a>
             </motion.div>
           </motion.div>
@@ -967,7 +969,7 @@ export default function Home() {
                             key={skill}
                             className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary font-mono text-xs rounded-sm border border-primary/30"
                           >
-                            {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                            {IconComponent && <IconComponent className="w-3.5 h-3.5" style={{ color: techIcon?.color || 'currentColor' }} />}
                             {skill}
                           </span>
                         );
@@ -1052,7 +1054,7 @@ export default function Home() {
                                 key={tool}
                                 className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-secondary text-secondary-foreground font-mono text-xs rounded-sm border border-border/40"
                               >
-                                {IconComponent && <IconComponent className="w-3.5 h-3.5" />}
+                                {IconComponent && <IconComponent className="w-3.5 h-3.5" style={{ color: techIcon?.color || 'currentColor' }} />}
                                 {tool}
                               </span>
                             );
@@ -1174,7 +1176,7 @@ export default function Home() {
               data-testid="link-contact-github"
               className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Github className="w-5 h-5" />
+              <SiGithub className="w-5 h-5" />
               <span className="text-sm">GitHub</span>
             </motion.a>
             <motion.a
@@ -1185,7 +1187,7 @@ export default function Home() {
               data-testid="link-contact-linkedin"
               className="flex items-center gap-2.5 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Linkedin className="w-5 h-5" />
+              <FaLinkedin className="w-5 h-5" />
               <span className="text-sm">LinkedIn</span>
             </motion.a>
             <motion.a
