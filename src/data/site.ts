@@ -1,13 +1,22 @@
-// Single source of truth for personal facts. Every value here is taken from the
-// owner's resume (public/documents/RESUME.pdf), the previous site, or the
-// project READMEs. Do not add claims that cannot be traced to one of those.
+// Single source of truth for every fact on the site, the prerendered HTML,
+// llms.txt, llms-full.txt and profile.json. Every value is taken from the
+// owner's resume, details he supplied, or the project READMEs. Do not add
+// claims that cannot be traced to one of those.
 export const SITE = {
   name: "Likhith Ponnada",
+  shortName: "Likhith",
   url: "https://likhithponnada.vercel.app/",
   github: "https://github.com/likhith1253",
   linkedin: "https://linkedin.com/in/likhith-ponnada",
   email: "plnlikhith@gmail.com",
   resume: "/documents/RESUME.pdf",
+  location: "Hyderabad, India",
+  role: "AI/ML and software engineering",
+  headline:
+    "I build AI systems end to end: the data pipeline, the model, the API around it and the interface people use.",
+  intro:
+    "Computer science student at Amrita Vishwa Vidyapeetham. Most of what I build sits where machine learning meets real software: retrieval pipelines that cite their sources, reconciliation engines that explain their decisions, and the backends that keep them honest.",
+  lookingFor: "Open to AI/ML and software engineering internships",
 };
 
 export const EDUCATION = {
@@ -19,146 +28,232 @@ export const EDUCATION = {
 };
 
 export interface Role {
+  id: string;
   org: string;
-  title?: string;
-  period?: string;
-  location?: string;
+  title: string;
+  period: string;
+  location: string;
   summary: string;
-  bullets?: string[];
-  tools?: string[];
+  bullets: string[];
+  tools: string[];
 }
 
-// TG Transco: details supplied by the owner (role, dates, description). The 12% / 15% figures are stated as targets, as the owner worded them.
-export const TG_TRANSCO: Role = {
-  org: "TG Transco",
-  title: "AI/ML Intern",
-  period: "April 2026 – June 2026",
-  location: "Hyderabad, India (on-site)",
-  summary: "Internal analytics tool for electrical load forecasting, load-balance analysis and distribution planning.",
-  bullets: [
-    "Built a Python and Flask web application that brings historical load analysis, predictive forecasting and regional load assessment into one tool.",
-    "Trained a machine-learning model to predict electricity demand from historical load patterns, and surfaced its output in the interface to help spot potentially high-stress distribution areas.",
-    "Designed to cut load-analysis time by 12% and improve forecasting error by 15% relative to a baseline model (targets for the tool).",
-  ],
-  tools: ["Python", "Flask", "Machine learning", "Predictive analytics"],
-};
+// TG Transco: details supplied by the owner. The 12% / 15% figures are targets, as he worded them.
+export const EXPERIENCE: Role[] = [
+  {
+    id: "tg-transco",
+    org: "TG Transco",
+    title: "AI/ML Intern",
+    period: "April 2026 – June 2026",
+    location: "Hyderabad, India · on-site",
+    summary: "An internal analytics tool for electrical load forecasting, load-balance analysis and distribution planning.",
+    bullets: [
+      "Built a Python and Flask web application that brings historical load analysis, demand forecasting and regional load assessment into one place.",
+      "Trained a machine-learning model to predict electricity demand from historical load patterns, and surfaced its output in the interface to flag distribution areas likely to come under stress.",
+      "Designed to cut load-analysis time by 12% and improve forecasting error by 15% against a baseline model (targets for the tool).",
+    ],
+    tools: ["Python", "Flask", "Machine learning", "Predictive analytics"],
+  },
+  {
+    id: "bluestock",
+    org: "Bluestock Fintech Pvt. Ltd.",
+    title: "Data Analyst Intern",
+    period: "April 2026 – June 2026",
+    location: "Hyderabad, India",
+    summary: "Financial data engineering and analytics on public mutual-fund datasets.",
+    bullets: [
+      "Built ETL pipelines (Python, Pandas, SQLAlchemy) over 46,000+ mutual fund NAV records and 32,000+ investor transactions.",
+      "Designed normalized star-schema databases and computed Sharpe, Sortino, alpha, beta, VaR and maximum drawdown.",
+      "Delivered a Power BI dashboard and 15+ analytical visualizations, benchmarking funds against the Nifty 50 and Nifty 100.",
+    ],
+    tools: ["Python", "Pandas", "SQL", "SQLAlchemy", "PostgreSQL", "Power BI"],
+  },
+];
 
-export const BLUESTOCK: Role = {
-  org: "Bluestock Fintech Pvt. Ltd.",
-  title: "Data Analyst Intern",
-  period: "April 2026 – June 2026",
-  location: "Hyderabad, India",
-  summary: "Financial data engineering and analytics on public mutual-fund datasets.",
-  bullets: [
-    "Built ETL pipelines (Python, Pandas, SQLAlchemy) over 46,000+ mutual fund NAV records and 32,000+ investor transactions.",
-    "Designed normalized star-schema databases and computed Sharpe, Sortino, Alpha, Beta, VaR and Maximum Drawdown.",
-    "Delivered a Power BI dashboard and 15+ analytical visualizations; benchmarked funds against Nifty 50 and Nifty 100.",
-  ],
-  tools: ["Python", "Pandas", "SQL", "SQLAlchemy", "PostgreSQL", "Power BI"],
-};
+export interface Metric {
+  value: number;
+  decimals?: number;
+  suffix?: string;
+  label: string;
+}
 
 export interface Project {
+  id: string;
   name: string;
-  tagline: string;
-  bullets: string[];
-  flow: string[];
-  tags: string[];
-  links: { label: string; href: string }[];
-  featured?: boolean;
   kind: string;
+  year: string;
+  oneLiner: string;
+  problem: string;
+  built: string[];
+  metrics: Metric[];
+  metricNote?: string;
+  stack: string[];
+  links: { label: string; href: string }[];
 }
 
-// Claims below were checked against each repo's README under D:\ (see report).
+// Claims below were checked against each repo's README.
 export const PROJECTS: Project[] = [
   {
+    id: "veridex",
     name: "Veridex",
     kind: "AI financial reconciliation",
-    tagline: "Matches payment-gateway, ledger and bank records, finds which leg broke, and explains why. Humans approve every corrective action.",
-    bullets: [
-      "Deterministic rules first, then an XGBoost arbitration model, then an LLM investigation (LangGraph) only for what survives.",
-      "Policy-gated human approval with server-side ceilings and an immutable audit trail.",
-      "52 backend test modules run in CI; a seeded evaluation harness scores the engine separately from live usage.",
-      "Deployed: Next.js on Vercel, FastAPI on Render, PostgreSQL on Neon.",
+    year: "2026",
+    oneLiner: "Finds the transaction that doesn't add up, proves why, and never moves money without a human saying yes.",
+    problem:
+      "Payment companies keep three records of every transaction: the gateway, the internal ledger and the bank statement. They drift apart through fees, timing lags and duplicates, and someone has to work out which leg broke.",
+    built: [
+      "Three-way matcher: deterministic rules first, an XGBoost model for the ambiguous cases, and a LangGraph investigation only for what survives both.",
+      "Classifies each exception by root cause (missing source, timing lag, fee or tax mismatch, duplicate, amount mismatch) with the evidence that supports it.",
+      "Policy-gated human approval for every corrective action, with server-side limits and an audit trail.",
+      "FastAPI + PostgreSQL backend and a Next.js console, deployed on Render, Neon and Vercel, with a CI-run test suite.",
     ],
-    flow: ["Gateway · Ledger · Bank", "Rules", "XGBoost", "LLM investigation", "Human approval"],
-    tags: ["FastAPI", "XGBoost", "LangGraph", "Next.js", "PostgreSQL", "Qdrant"],
+    metrics: [
+      { value: 90.15, decimals: 2, label: "F1 on the seeded benchmark" },
+      { value: 95.56, decimals: 2, suffix: "%", label: "recall" },
+      { value: 85.32, decimals: 2, suffix: "%", label: "precision" },
+      { value: 482, label: "backend tests passing" },
+    ],
+    metricNote: "Reproduced run: 500 transactions, seed 42.",
+    stack: ["FastAPI", "XGBoost", "LangGraph", "PostgreSQL", "Next.js", "TypeScript"],
     links: [
       { label: "Live app", href: "https://veridex-three.vercel.app" },
-      { label: "Source", href: "https://github.com/likhith1253/veridex" },
+      { label: "Code", href: "https://github.com/likhith1253/veridex" },
     ],
-    featured: true,
   },
   {
+    id: "docrag",
     name: "DocRag",
-    kind: "Research-paper RAG",
-    tagline: "Question answering over academic PDFs with section- and page-level citations, built to refuse rather than guess.",
-    bullets: [
-      "Layout-aware parsing keeps equations, tables and algorithms as tagged chunks.",
-      "Per-collection Qdrant isolation, MMR plus cross-encoder reranking, and an evidence swap that keeps equation chunks from being dropped.",
-      "Grounding prompt returns a refusal when the context lacks the answer. On a 64-question human-verified benchmark: 84.4% answer accuracy, 81.25% retrieval hit rate, 95.3% correct citations.",
+    kind: "Citation-grounded RAG",
+    year: "2026",
+    oneLiner: "Answers questions about research papers with the page and section it got them from, and refuses when the paper doesn't say.",
+    problem:
+      "General chat models misquote equations, invent table values and blend sources. For research papers, an answer without a checkable citation isn't worth much.",
+    built: [
+      "Layout-aware PDF parsing that keeps equations, tables and algorithms as tagged chunks instead of shredding them.",
+      "Per-collection Qdrant isolation so answers never mix papers, with MMR diversity and cross-encoder reranking.",
+      "An evidence gate that stops equation and table chunks from being dropped during reranking.",
+      "A grounding prompt that returns a refusal when the retrieved context doesn't contain the answer.",
     ],
-    flow: ["PDF parse", "Chunk + embed", "Qdrant", "Rerank", "Cited answer"],
-    tags: ["Python", "Qdrant", "FastAPI", "Streamlit", "sentence-transformers"],
-    links: [{ label: "Source", href: "https://github.com/likhith1253/DocRag" }],
+    metrics: [
+      { value: 84.4, decimals: 1, suffix: "%", label: "answer accuracy" },
+      { value: 81.25, decimals: 2, suffix: "%", label: "retrieval hit rate" },
+      { value: 95.3, decimals: 1, suffix: "%", label: "correct citations" },
+      { value: 64, label: "human-verified questions" },
+    ],
+    metricNote: "Run on a GPU machine over SSH.",
+    stack: ["Python", "FastAPI", "Qdrant", "e5-base-v2", "Cross-encoder", "Qwen2.5"],
+    links: [{ label: "Code", href: "https://github.com/likhith1253/DocRag" }],
   },
   {
+    id: "synergy",
     name: "SynergySpace",
-    kind: "Real-time collaborative editor",
-    tagline: "Multi-user document editing as a microservice monorepo, with AI writing assistance and role-based organizations.",
-    bullets: [
-      "Live multi-user editing over Socket.IO, with room access and write permission checked against the database.",
-      "Separate auth, organization, document, collaboration and FastAPI AI services behind one gateway.",
-      "README documents its trade-offs: shared database, single gateway, no published latency benchmark.",
+    kind: "Real-time collaboration",
+    year: "2026",
+    oneLiner: "A multi-user workspace for documents, slides and chat, split into services behind one gateway.",
+    problem:
+      "Real-time editing is easy to demo and hard to secure: every socket room and every document request has to know who you are and what you're allowed to touch.",
+    built: [
+      "Live multi-user editing over Socket.IO, with room access and write permission checked against the database on every join and broadcast.",
+      "Separate auth, organization, document, collaboration and FastAPI AI services behind an API gateway.",
+      "Role-based organizations, invitations, Stripe billing, and an AI writing service that requires a valid token and is rate-limited per user.",
     ],
-    flow: ["Next.js", "API gateway", "Auth · Org · Docs", "Collab (Socket.IO)", "AI (FastAPI)"],
-    tags: ["Next.js", "Socket.IO", "Prisma", "PostgreSQL", "FastAPI"],
+    metrics: [
+      { value: 5, label: "services behind one gateway" },
+      { value: 71, label: "automated tests" },
+    ],
+    stack: ["Next.js", "Node.js", "Socket.IO", "Prisma", "PostgreSQL", "FastAPI"],
     links: [
       { label: "Live demo", href: "https://synergyspace-web.vercel.app" },
-      { label: "Source", href: "https://github.com/likhith1253/Synergy_Space" },
+      { label: "Code", href: "https://github.com/likhith1253/Synergy_Space" },
     ],
   },
   {
+    id: "censusgrid",
     name: "CensusGrid",
-    kind: "India geography API",
-    tagline: "REST API and developer portal for 457,000+ Indian village records across 600+ districts and 36 states and UTs.",
-    bullets: [
-      "API-key management, JWT auth, rate limiting, Redis edge caching.",
-      "Stripe checkout and webhooks for plan upgrades; OpenAPI docs and a traffic-analytics dashboard.",
+    kind: "Geography data API",
+    year: "2026",
+    oneLiner: "A REST API and developer portal for every Indian village, district and state, with keys, quotas and billing.",
+    problem:
+      "Address verification in India needs the full administrative hierarchy, and there was no clean, rate-limited API for it.",
+    built: [
+      "Hierarchical lookups and search across 457,000+ villages in 600+ districts and 36 states and union territories.",
+      "API-key management, JWT auth, per-key rate limits and Redis caching with an in-process fallback.",
+      "Stripe checkout and webhooks, OpenAPI docs and a usage-analytics dashboard.",
     ],
-    flow: ["React console", "Express gateway", "Auth + limits", "Redis cache", "PostgreSQL"],
-    tags: ["Node.js", "Express", "Prisma", "PostgreSQL", "Redis", "Stripe", "React"],
+    metrics: [
+      { value: 457000, suffix: "+", label: "villages indexed" },
+      { value: 61, label: "API tests" },
+    ],
+    stack: ["Node.js", "Express", "Prisma", "PostgreSQL", "Redis", "Stripe", "React"],
     links: [
       { label: "Live", href: "https://censusgrid.vercel.app" },
-      { label: "Source", href: "https://github.com/likhith1253/village-api" },
+      { label: "Code", href: "https://github.com/likhith1253/village-api" },
     ],
   },
   {
+    id: "capstone",
     name: "ML Capstone",
-    kind: "ML pipelines + Streamlit dashboard",
-    tagline: "Regression, classification and clustering tracks on three public datasets, with leakage-safe preprocessing.",
-    bullets: [
+    kind: "Classical ML, done carefully",
+    year: "2026",
+    oneLiner: "Regression, classification and clustering on three public datasets, with leakage-safe pipelines and an honest write-up of what didn't work.",
+    problem:
+      "Most coursework ML reports a single number. The interesting part is whether the number survives a proper split, cross-validation and a look at the failure cases.",
+    built: [
       "Scalers and encoders fitted on training data only; hyperparameters tuned with cross-validation; scored on a held-out test set.",
-      "Dry Bean classification: MLP reached 95.41% test accuracy (0.9978 multiclass ROC-AUC).",
-      "Interactive Streamlit dashboard covers all three tracks.",
+      "Ten classifiers compared on the UCI Dry Bean dataset (7 classes); the MLP came out on top.",
+      "A Streamlit dashboard for all three tracks, plus a limitations section on single-split variance and lopsided clusters.",
     ],
-    flow: ["Clean + split", "Fit on train only", "CV tuning", "Held-out test", "Dashboard"],
-    tags: ["scikit-learn", "Pandas", "NumPy", "Streamlit", "Jupyter"],
-    links: [{ label: "Source", href: "https://github.com/likhith1253/ML_Capstone" }],
+    metrics: [
+      { value: 95.41, decimals: 2, suffix: "%", label: "test accuracy, Dry Bean MLP" },
+      { value: 0.9978, decimals: 4, label: "multiclass ROC-AUC" },
+    ],
+    stack: ["scikit-learn", "Pandas", "NumPy", "Streamlit", "Jupyter"],
+    links: [{ label: "Code", href: "https://github.com/likhith1253/ML_Capstone" }],
   },
 ];
 
 export const ALSO_BUILT = [
-  { name: "Movie Intelligence Engine", text: "Semantic movie recommender with ChromaDB, transformer embeddings, HNSW indexing and metadata filtering.", href: "https://github.com/likhith1253/Movie_Recommendation_System" },
-  { name: "ESUA", text: "Real-time scene understanding with YOLOv8, proximity analysis and temporal smoothing.", href: "https://github.com/likhith1253/ESUA" },
+  { name: "ESUA", text: "Real-time scene understanding: YOLOv8 detection, temporal smoothing and spatial hazard rules on a webcam feed.", href: "https://github.com/likhith1253/ESUA" },
+  { name: "Movie Intelligence Engine", text: "Semantic movie recommender with ChromaDB, transformer embeddings and metadata filtering.", href: "https://github.com/likhith1253/Movie_Recommendation_System" },
   { name: "ChemViz", text: "Equipment analytics platform (Django, Pandas, PostgreSQL) with LLM-generated summaries.", href: "https://chemicalanalyzer.vercel.app" },
 ];
 
-export const SKILLS: { group: string; items: string[] }[] = [
-  { group: "ML & AI", items: ["PyTorch", "TensorFlow", "scikit-learn", "XGBoost", "OpenCV", "LangGraph", "RAG", "Vector search (Qdrant, ChromaDB)"] },
-  { group: "Data", items: ["Python", "Pandas", "NumPy", "SQL", "PostgreSQL", "Redis", "Power BI"] },
-  { group: "Backend", items: ["FastAPI", "Node.js", "Express", "Django", "REST APIs", "WebSockets", "JWT / RBAC", "Microservices"] },
-  { group: "Frontend", items: ["TypeScript", "React", "Next.js", "Tailwind CSS"] },
-  { group: "Languages & tools", items: ["Python", "TypeScript", "JavaScript", "Java", "C", "Git", "Docker", "GitHub Actions"] },
+export interface Skill {
+  name: string;
+  group: "ML & AI" | "Retrieval" | "Data" | "Backend" | "Frontend";
+  projects: string[];
+}
+
+// Each skill lists the projects where it is actually used.
+export const SKILLS: Skill[] = [
+  { name: "PyTorch", group: "ML & AI", projects: [] },
+  { name: "scikit-learn", group: "ML & AI", projects: ["ML Capstone"] },
+  { name: "XGBoost", group: "ML & AI", projects: ["Veridex"] },
+  { name: "TensorFlow", group: "ML & AI", projects: [] },
+  { name: "OpenCV / YOLOv8", group: "ML & AI", projects: ["ESUA"] },
+  { name: "LangGraph", group: "ML & AI", projects: ["Veridex"] },
+  { name: "Forecasting", group: "ML & AI", projects: ["TG Transco"] },
+  { name: "RAG", group: "Retrieval", projects: ["DocRag"] },
+  { name: "Qdrant", group: "Retrieval", projects: ["DocRag", "Veridex"] },
+  { name: "ChromaDB", group: "Retrieval", projects: ["Movie Intelligence Engine"] },
+  { name: "Reranking", group: "Retrieval", projects: ["DocRag"] },
+  { name: "Embeddings", group: "Retrieval", projects: ["DocRag", "Movie Intelligence Engine"] },
+  { name: "Python", group: "Data", projects: ["Veridex", "DocRag", "ML Capstone", "TG Transco", "Bluestock"] },
+  { name: "Pandas", group: "Data", projects: ["ML Capstone", "Bluestock", "ChemViz"] },
+  { name: "SQL", group: "Data", projects: ["Bluestock", "CensusGrid"] },
+  { name: "PostgreSQL", group: "Data", projects: ["Veridex", "SynergySpace", "CensusGrid", "Bluestock"] },
+  { name: "Redis", group: "Data", projects: ["CensusGrid"] },
+  { name: "Power BI", group: "Data", projects: ["Bluestock"] },
+  { name: "FastAPI", group: "Backend", projects: ["Veridex", "DocRag", "SynergySpace"] },
+  { name: "Flask", group: "Backend", projects: ["TG Transco"] },
+  { name: "Node.js", group: "Backend", projects: ["SynergySpace", "CensusGrid"] },
+  { name: "Django", group: "Backend", projects: ["ChemViz"] },
+  { name: "WebSockets", group: "Backend", projects: ["SynergySpace"] },
+  { name: "Auth / RBAC", group: "Backend", projects: ["SynergySpace", "CensusGrid", "Veridex"] },
+  { name: "Docker", group: "Backend", projects: [] },
+  { name: "TypeScript", group: "Frontend", projects: ["Veridex", "SynergySpace"] },
+  { name: "React", group: "Frontend", projects: ["CensusGrid", "SynergySpace"] },
+  { name: "Next.js", group: "Frontend", projects: ["Veridex", "SynergySpace"] },
 ];
 
 export const CERTS = [
@@ -167,12 +262,11 @@ export const CERTS = [
 ];
 
 export const OPEN_SOURCE = [
-  { name: "iCalendar", text: "Merged contribution improving RFC 5545 compliance.", href: "https://github.com/collective/icalendar/pull/1116", label: "Pull request #1116" },
-  { name: "OpenAlgo", text: "Webhook API and Python strategy integration work.", href: "", label: "" },
-  { name: "GirlScript Summer of Code 2026", text: "Selected contributor.", href: "", label: "" },
+  { name: "collective/icalendar", text: "Merged pull request #1116, improving RFC 5545 compliance.", href: "https://github.com/collective/icalendar/pull/1116" },
+  { name: "GirlScript Summer of Code 2026", text: "Selected contributor.", href: "" },
 ];
 
 export const RECOGNITION = [
-  { name: "Hack 101 Hackathon", text: "Special Mention." },
-  { name: "Intel IoT Hackathon", text: "Participant." },
+  { name: "Hack 101 Hackathon", text: "Special mention" },
+  { name: "Intel IoT Hackathon", text: "Participant" },
 ];
