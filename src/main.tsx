@@ -1,5 +1,8 @@
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
-import "./index.css";
+import "./styles.css";
 
-createRoot(document.getElementById("root")!).render(<App />);
+const root = document.getElementById("root")!;
+// The production build ships prerendered HTML; hydrate it. The dev server starts empty.
+if (root.hasChildNodes()) hydrateRoot(root, <App />);
+else createRoot(root).render(<App />);
