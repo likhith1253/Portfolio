@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useEffect, useRef, type ReactNode } from "react";
-import { ALSO_BUILT, CERTS, EDUCATION, EXPERIENCE, OPEN_SOURCE, PROJECTS, RECOGNITION, SITE, type Project } from "@/data/site";
+import { BUILDS, CERTS, EDUCATION, EXPERIENCE, OPEN_SOURCE, PROJECTS, RECOGNITION, RESEARCH, SITE, type Project } from "@/data/site";
 import { formatNumber, initMotion } from "@/lib/motion";
 import EmbeddingField from "@/components/EmbeddingField";
 import SkillMap from "@/components/SkillMap";
@@ -16,7 +16,7 @@ const VIZ: Record<string, () => ReactNode> = {
   docrag: () => <DocRagViz />,
   synergy: () => <SynergyViz />,
   censusgrid: () => <CensusViz />,
-  capstone: () => <CapstoneViz />,
+  "tabular-lab": () => <CapstoneViz />,
 };
 
 const NAV = [
@@ -106,7 +106,7 @@ const TICKS = [
   { v: "90.15", l: "F1 · Veridex reconciliation" },
   { v: "482", l: "backend tests · Veridex" },
   { v: "457K+", l: "villages served · CensusGrid" },
-  { v: "95.41%", l: "test accuracy · ML Capstone" },
+  { v: "95.41%", l: "test accuracy · Tabular ML Lab" },
   { v: "2", l: "internships · 2026" },
 ];
 
@@ -308,9 +308,33 @@ export default function App() {
           </div>
         </section>
 
+        <section id="builds" className="section" aria-label="More AI, ML and systems projects">
+          <div className="wrap">
+            <SecHead n="03" label="More builds" title={["The rest of the", { em: "AI and systems work." }]} sub="Smaller or earlier projects. Each one says what it is, what's real about it, and where its limits are." />
+            <div className="builds">
+              {BUILDS.map((b) => {
+                const inner = (
+                  <>
+                    <span className="k">{b.kind}</span>
+                    <h4>{b.name}{b.href && <> <span className="acid" aria-hidden="true">↗</span></>}</h4>
+                    <p>{b.text}</p>
+                    <div className="stack">{b.stack.map((t) => <span className="chip" key={t}>{t}</span>)}</div>
+                    {b.fact && <span className="fact">{b.fact}</span>}
+                  </>
+                );
+                return b.href ? (
+                  <a key={b.name} className="build" href={b.href} target="_blank" rel="noopener noreferrer" data-reveal>{inner}</a>
+                ) : (
+                  <div key={b.name} className="build" data-reveal>{inner}</div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         <section id="about" className="section" aria-label="About">
           <div className="wrap">
-            <SecHead n="03" label="About" title={["Who's", { em: "behind the systems." }]} />
+            <SecHead n="04" label="About" title={["Who's", { em: "behind the systems." }]} />
             <div className="about">
               <figure className="portrait" data-reveal>
                 <img
@@ -331,7 +355,13 @@ export default function App() {
                   and write-ups that say plainly what didn't work. In 2026 that meant two internships and five projects
                   with working backends, tests and published results.
                 </p>
-                <ul className="fact-list">
+                <div className="now">
+                  <span className="label">{RESEARCH.status}</span>
+                  <h4>{RESEARCH.title}</h4>
+                  <p>{RESEARCH.summary} {RESEARCH.note}</p>
+                  <div className="stack" style={{ margin: 0 }}>{RESEARCH.tags.map((t) => <span className="chip" key={t}>{t}</span>)}</div>
+                </div>
+                <ul className="fact-list" style={{ marginTop: 22 }}>
                   <li><span>Studying</span><span>{EDUCATION.degree.replace("B.Tech in ", "B.Tech · ")}, {EDUCATION.school}</span></li>
                   <li><span>Graduating</span><span>{EDUCATION.expected.replace("Expected ", "")}</span></li>
                   <li><span>Based in</span><span>{SITE.location}</span></li>
@@ -346,12 +376,30 @@ export default function App() {
           </div>
         </section>
 
+        <section id="certifications" className="section" aria-label="Certifications">
+          <div className="wrap">
+            <SecHead n="05" label="Certifications" title={["Coursework I", { em: "finished and can prove." }]} sub="Each one links to its verification page." />
+            <div className="certs">
+              {CERTS.map((c) => (
+                <article className="cert" key={c.title} data-reveal>
+                  <span className="label">{c.category} · {c.date}</span>
+                  <h3>{c.title}</h3>
+                  <p className="by">{c.issuer}{c.partner ? ` · ${c.partner}` : ""}{c.instructor ? ` · taught by ${c.instructor}` : ""}</p>
+                  <p>{c.description}</p>
+                  <div className="stack" style={{ margin: 0 }}>{c.topics.map((t) => <span className="chip" key={t}>{t}</span>)}</div>
+                  <a className="link-pill verify" href={c.href} target="_blank" rel="noopener noreferrer">Verify credential <span aria-hidden="true">↗</span></a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="skills" className="section" aria-label="Skills">
           <div className="wrap">
             <SecHead
-              n="04" label="Skills"
+              n="06" label="Skills"
               title={["What I work with,", { em: "mapped by where I've used it." }]}
-              sub="Bigger nodes show up in more projects. Pick one to see where it's used and what it travels with."
+              sub="Pick a skill to see which projects use it; bigger nodes show up in more of them. A few I know well but haven't tied to a project here, and those say so."
             />
             <SkillMap />
           </div>
@@ -360,7 +408,7 @@ export default function App() {
         <section id="ask" className="section" aria-label="Ask this page">
           <div className="wrap">
             <SecHead
-              n="05" label="Ask"
+              n="07" label="Ask"
               title={["Ask this page", { em: "a question." }]}
               sub="A small BM25 index over everything on this site. It retrieves the best passages and cites the section they came from. No language model, no server."
             />
@@ -370,15 +418,7 @@ export default function App() {
 
         <section id="more" className="section" aria-label="Other projects, education and more">
           <div className="wrap">
-            <SecHead n="06" label="Also" title={["Smaller builds,", { em: "school and the rest." }]} />
-            <div className="cards3">
-              {ALSO_BUILT.map((a) => (
-                <a key={a.name} className="card" href={a.href} target="_blank" rel="noopener noreferrer" data-reveal>
-                  <h4>{a.name} <span className="acid" aria-hidden="true">↗</span></h4>
-                  <p>{a.text}</p>
-                </a>
-              ))}
-            </div>
+            <SecHead n="08" label="Also" title={["School and", { em: "the rest." }]} />
             <div className="facts">
               <div className="card" data-reveal>
                 <span className="label">Education</span>
@@ -387,11 +427,8 @@ export default function App() {
                 <div className="stack" style={{ marginTop: 14, marginBottom: 0 }}>{EDUCATION.coursework.map((c) => <span className="chip" key={c}>{c}</span>)}</div>
               </div>
               <div className="card" data-reveal>
-                <span className="label">Certifications · open source · recognition</span>
+                <span className="label">Open source · recognition</span>
                 <ul className="fact-list" style={{ marginTop: 14 }}>
-                  {CERTS.map((c) => (
-                    <li key={c.title}><a href={c.href} target="_blank" rel="noopener noreferrer">{c.title} ↗</a><span>{c.issuer}</span></li>
-                  ))}
                   {OPEN_SOURCE.map((o) => (
                     <li key={o.name}>{o.href ? <a href={o.href} target="_blank" rel="noopener noreferrer">{o.name} ↗</a> : <span>{o.name}</span>}<span>{o.text}</span></li>
                   ))}
@@ -405,7 +442,7 @@ export default function App() {
 
       <footer id="contact" className="contact" aria-label="Contact">
         <div className="wrap">
-          <span className="label">07 / Contact</span>
+          <span className="label">09 / Contact</span>
           <Words as="h2" className="contact-title" parts={["Building something", { em: "that has to work?" }]} />
           <a className="big-mail" href={`mailto:${SITE.email}`}>{SITE.email}</a>
           <div className="btns">

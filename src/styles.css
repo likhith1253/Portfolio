@@ -252,10 +252,10 @@ section { position: relative; }
 
 /* ---------- skill map ---------- */
 .skillmap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: stretch; }
-.map { position: relative; border: 1px solid var(--line); border-radius: 22px; background: var(--bg-2); overflow: hidden; aspect-ratio: 800 / 520; align-self: start; }
+.map { position: relative; border: 1px solid var(--line); border-radius: 22px; background: var(--bg-2); overflow: hidden; aspect-ratio: 900 / 600; align-self: start; }
 .map svg { width: 100%; height: 100%; position: absolute; inset: 0; }
 .map .node { cursor: pointer; }
-.map .node text { font-family: var(--mono); font-size: 12.5px; fill: var(--muted); transition: fill 0.2s; pointer-events: none; }
+.map .node text { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); opacity: 0; transition: fill 0.2s; pointer-events: none; }
 .map .node circle { transition: r 0.25s var(--ease), fill 0.25s; }
 .map .node.on text, .map .node:focus-visible text { fill: var(--text); }
 .map .node:focus { outline: none; }
@@ -332,7 +332,7 @@ a.card:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .contact h2 em { font-style: normal; color: var(--acid); }
 
 /* ---------- about ---------- */
-.about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
+.about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
 .portrait { position: relative; margin: 0; border-radius: 22px; overflow: hidden; border: 1px solid var(--line-2); background: var(--panel); max-width: 460px; }
 .portrait img { width: 100%; height: auto; aspect-ratio: 836 / 1019; object-fit: cover; filter: saturate(0.92) contrast(1.03); transition: transform 1.2s var(--ease), filter 0.6s; }
 .portrait:hover img { transform: scale(1.035); filter: saturate(1.05) contrast(1.05); }
@@ -353,3 +353,58 @@ a.card:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .hero-id-text .status { white-space: normal; }
 @media (max-width: 860px) { .hero-id { border-radius: 22px; } }
 .hero-id { max-width: 460px; }
+
+.map .node.lab text, .map .node:hover text, .map .node:focus-visible text { opacity: 1; }
+.portrait { position: sticky; top: 110px; }
+@media (max-width: 860px) { .portrait { position: relative; top: 0; } }
+div.build { cursor: default; }
+
+/* ---------- logo wall ---------- */
+.wall { margin-top: 28px; display: grid; gap: 26px; border: 1px solid var(--line); border-radius: 22px; background: var(--bg-2); padding: clamp(18px, 3vw, 34px); }
+.wall-group h3 { margin: 0 0 12px; font-weight: 500; }
+.wall-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+.tile { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 92px; padding: 14px 8px 12px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); cursor: pointer; text-align: center; transition: border-color 0.2s, transform 0.35s var(--ease), background 0.2s; }
+.tile span { font-family: var(--mono); font-size: 11.5px; color: var(--muted); line-height: 1.25; }
+.tile:hover, .tile.on { border-color: var(--acid); transform: translateY(-3px); background: var(--panel-2); }
+.tile:hover span, .tile.on span { color: var(--text); }
+.tile.no-mark { justify-content: center; }
+.tile.no-mark span { font-size: 12.5px; color: var(--text); }
+.tile svg { transition: transform 0.35s var(--ease); }
+.tile:hover svg, .tile.on svg { transform: scale(1.12); }
+.logos-note { font-family: var(--mono); font-size: 11.5px; color: var(--dim); margin: 14px 0 0; }
+
+/* ---------- certifications ---------- */
+.certs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cert { display: flex; flex-direction: column; gap: 14px; border: 1px solid var(--line); border-radius: 22px; padding: clamp(20px, 3vw, 32px); background: var(--bg-2); transition: border-color 0.25s, transform 0.4s var(--ease); }
+.cert:hover { border-color: var(--line-2); transform: translateY(-3px); }
+.cert h3 { font-family: var(--display); font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.03em; line-height: 1.05; margin: 0; font-weight: 650; }
+.cert .by { color: var(--muted); font-size: 15px; margin: 0; }
+.cert p { color: var(--muted); margin: 0; font-size: 15.5px; }
+.cert .verify { margin-top: auto; align-self: flex-start; }
+@media (max-width: 860px) { .certs { grid-template-columns: 1fr; } }
+
+/* ---------- now / research ---------- */
+.now { margin-top: 28px; border: 1px dashed rgba(200, 255, 62, 0.4); border-radius: 18px; padding: 20px 22px; background: radial-gradient(90% 140% at 0% 0%, rgba(200, 255, 62, 0.06), transparent 60%); }
+.now .label { color: var(--acid); display: inline-flex; align-items: center; gap: 8px; }
+.now .label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--acid); animation: blink 1.4s steps(1) infinite; }
+.now h4 { font-family: var(--display); font-size: clamp(22px, 2.4vw, 30px); letter-spacing: -0.02em; margin: 10px 0 8px; font-weight: 600; }
+.now p { color: var(--muted); margin: 0 0 12px; max-width: 60ch; font-size: 15.5px; }
+
+/* ---------- more builds ---------- */
+.builds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.build { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--line); border-radius: 20px; padding: 22px; background: var(--bg-2); transition: border-color 0.25s, transform 0.4s var(--ease); color: inherit; }
+a.build:hover { border-color: var(--acid); transform: translateY(-3px); }
+.build .k { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--acid); }
+.build h4 { font-family: var(--display); font-size: 26px; letter-spacing: -0.02em; margin: 0; font-weight: 600; }
+.build p { color: var(--muted); margin: 0; font-size: 15px; }
+.build .fact { font-family: var(--mono); font-size: 12px; color: var(--text); border-top: 1px dashed var(--line); padding-top: 10px; margin-top: auto; }
+.build .stack { margin: 0; }
+@media (max-width: 760px) { .builds { grid-template-columns: 1fr; } }
+
+/* phones: the plot is too small to read, so the logo wall and the selection panel carry it */
+@media (max-width: 700px) {
+  .map { display: none; }
+  .wall-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .tile { min-height: 82px; padding: 12px 4px 10px; }
+  .tile span { font-size: 10.5px; }
+}

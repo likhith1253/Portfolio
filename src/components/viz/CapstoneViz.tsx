@@ -53,7 +53,7 @@ export default function CapstoneViz() {
   return (
     <div className="viz" ref={wrap}>
       <div className="viz-bar">
-        <span>ml capstone · dry bean, 7 classes</span>
+        <span>tabular ml lab · dry bean, 7 classes</span>
         <span className="live">{reduced ? "static" : "illustration"}</span>
       </div>
       <svg ref={svg} viewBox="0 0 640 440" role="img" aria-label="Illustration: points for seven dry bean classes start mixed and separate into clusters as a classifier fits; the reported held-out test accuracy is 95.41 percent.">

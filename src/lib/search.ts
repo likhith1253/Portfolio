@@ -1,4 +1,4 @@
-import { EDUCATION, EXPERIENCE, PROJECTS, SITE, SKILLS, CERTS, OPEN_SOURCE, ALSO_BUILT } from "@/data/site";
+import { BUILDS, CERTS, EDUCATION, EXPERIENCE, GROUPS, OPEN_SOURCE, PROJECTS, RESEARCH, SITE, SKILLS } from "@/data/site";
 
 // A tiny retrieval engine over the site's own content. BM25 over short passages,
 // a few query expansions, and the passage's section as its citation. No LLM.
@@ -20,19 +20,26 @@ export function buildPassages(): Passage[] {
     r.bullets.forEach((b, i) => ps.push({ id: `${r.id}-${i}`, source: r.org, anchor: "#experience", text: `${r.org} internship: ${b} Tools: ${r.tools.join(", ")}.` }));
   }
   ps.push({ id: "edu", source: "Education", anchor: "#more", text: `${EDUCATION.degree}, ${EDUCATION.school}, ${EDUCATION.expected}, ${EDUCATION.cgpa}. Coursework: ${EDUCATION.coursework.join(", ")}. Student, studies, study, university, college, degree.` });
-  const groups = [...new Set(SKILLS.map((s) => s.group))];
-  for (const g of groups) {
+  // one passage per skill, so a question about a single technology lands on that skill
+  for (const sk of SKILLS) {
+    ps.push({
+      id: `skill-${sk.name}`, source: "Skills", anchor: "#skills",
+      text: `${sk.name} (${sk.group}): ${sk.projects.length ? `used in ${sk.projects.join(", ")}.` : "working knowledge, not tied to one of the projects on this page."}${sk.note && sk.projects.length ? " " + sk.note : ""}`,
+    });
+  }
+  for (const g of GROUPS) {
     const items = SKILLS.filter((s) => s.group === g);
     ps.push({ id: `skills-${g}`, source: "Skills", anchor: "#skills", text: `${g} skills: ${items.map((s) => s.name + (s.projects.length ? ` (used in ${s.projects.join(", ")})` : "")).join("; ")}.` });
   }
-  ps.push({ id: "certs", source: "Certifications", anchor: "#more", text: `Certifications: ${CERTS.map((c) => `${c.title} from ${c.issuer} (${c.date})`).join("; ")}.` });
-  ps.push({ id: "oss", source: "Open source", anchor: "#more", text: `Open source: ${OPEN_SOURCE.map((o) => `${o.name}, ${o.text}`).join(" ")}` });
-  ps.push({ id: "also", source: "Other projects", anchor: "#more", text: `Other projects: ${ALSO_BUILT.map((a) => `${a.name}: ${a.text}`).join(" ")}` });
+  CERTS.forEach((c, i) => ps.push({ id: `cert-${i}`, source: "Certifications", anchor: "#certifications", text: `Certification: ${c.title}, ${c.issuer}${c.partner ? " and " + c.partner : ""}${c.instructor ? ", taught by " + c.instructor : ""} (${c.date}). ${c.description} Topics: ${c.topics.join(", ")}.` }));
+  ps.push({ id: "research", source: "Research", anchor: "#about", text: `${RESEARCH.status}: ${RESEARCH.title}. ${RESEARCH.summary} ${RESEARCH.note} Tags: ${RESEARCH.tags.join(", ")}. Research, evolutionary algorithms, optimization.` });
+  ps.push({ id: "oss", source: "Open source", anchor: "#more", text: `Open source and recognition: ${OPEN_SOURCE.map((o) => `${o.name}, ${o.text}`).join(" ")}` });
+  BUILDS.forEach((b, i) => ps.push({ id: `build-${i}`, source: b.name, anchor: "#builds", text: `${b.name} (${b.kind}): ${b.text} ${b.fact ? b.fact + ". " : ""}Stack: ${b.stack.join(", ")}.` }));
   ps.push({ id: "contact", source: "Contact", anchor: "#contact", text: `Contact ${SITE.name} by email at ${SITE.email}, on LinkedIn, or on GitHub (likhith1253). Resume PDF available. Hire, reach, email, available for internships.` });
   return ps;
 }
 
-const STOP = new Set("a an the and or of to in on for with is are was were be by at as it its this that what which who whom how does do did has have he his him i me my you your about from can any tell show give list project projects use used uses using built build make made he's does there here where when".split(" "));
+const STOP = new Set("a an the and or of to in on for with is are was were be by at as it its this that what which who whom how does do did has have he his him i me my you your about from can any tell show give list project projects use used uses using built build make made he's does there here where when know knows".split(" "));
 const EXPAND: Record<string, string[]> = {
   ml: ["machine", "learning"], ai: ["ml", "machine", "learning", "llm"], llm: ["langgraph", "rag", "qwen"],
   rag: ["retrieval", "citation", "qdrant"], retrieval: ["rag", "qdrant", "rerank"], backend: ["fastapi", "node", "express", "api"],

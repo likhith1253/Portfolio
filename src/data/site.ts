@@ -133,6 +133,7 @@ export const PROJECTS: Project[] = [
       "Per-collection Qdrant isolation so answers never mix papers, with MMR diversity and cross-encoder reranking.",
       "An evidence gate that stops equation and table chunks from being dropped during reranking.",
       "A grounding prompt that returns a refusal when the retrieved context doesn't contain the answer.",
+      "Runs on CPU or GPU: device auto-selection with fp16/fp32 handling, caches that keep CPU runs usable, and an optional Ollama backend. The benchmark ran on a remote GPU over SSH.",
     ],
     metrics: [
       { value: 84.4, decimals: 1, suffix: "%", label: "answer accuracy" },
@@ -191,8 +192,8 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    id: "capstone",
-    name: "ML Capstone",
+    id: "tabular-lab",
+    name: "Tabular ML Lab",
     kind: "Classical ML, done carefully",
     year: "2026",
     oneLiner: "Regression, classification and clustering on three public datasets, with leakage-safe pipelines and an honest write-up of what didn't work.",
@@ -212,54 +213,225 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const ALSO_BUILT = [
-  { name: "ESUA", text: "Real-time scene understanding: YOLOv8 detection, temporal smoothing and spatial hazard rules on a webcam feed.", href: "https://github.com/likhith1253/ESUA" },
-  { name: "Movie Intelligence Engine", text: "Semantic movie recommender with ChromaDB, transformer embeddings and metadata filtering.", href: "https://github.com/likhith1253/Movie_Recommendation_System" },
-  { name: "ChemViz", text: "Equipment analytics platform (Django, Pandas, PostgreSQL) with LLM-generated summaries.", href: "https://chemicalanalyzer.vercel.app" },
-];
+export const GROUPS = ["Languages", "ML & AI", "Retrieval", "Frontend", "Data & databases", "Backend", "DevOps & tools"] as const;
 
 export interface Skill {
   name: string;
-  group: "ML & AI" | "Retrieval" | "Data" | "Backend" | "Frontend";
+  group: (typeof GROUPS)[number];
   projects: string[];
+  note?: string;
 }
 
-// Each skill lists the projects where it is actually used.
+// A skill is listed only if it is used in a project shown on this page or in one of the two internships.
+// Project names match the cards on the page.
+const sk = (name: string, group: Skill["group"], projects: string[], note?: string): Skill => ({ name, group, projects, note });
+const GH = ["Veridex", "DocRag", "SynergySpace", "CensusGrid", "Tabular ML Lab", "ChemViz", "ESUA", "chart_detection", "SecurityLogAnalyzer", "Movie Intelligence Engine"];
+
 export const SKILLS: Skill[] = [
-  { name: "PyTorch", group: "ML & AI", projects: [] },
-  { name: "scikit-learn", group: "ML & AI", projects: ["ML Capstone"] },
-  { name: "XGBoost", group: "ML & AI", projects: ["Veridex"] },
-  { name: "TensorFlow", group: "ML & AI", projects: [] },
-  { name: "OpenCV / YOLOv8", group: "ML & AI", projects: ["ESUA"] },
-  { name: "LangGraph", group: "ML & AI", projects: ["Veridex"] },
-  { name: "Forecasting", group: "ML & AI", projects: ["TG Transco"] },
-  { name: "RAG", group: "Retrieval", projects: ["DocRag"] },
-  { name: "Qdrant", group: "Retrieval", projects: ["DocRag", "Veridex"] },
-  { name: "ChromaDB", group: "Retrieval", projects: ["Movie Intelligence Engine"] },
-  { name: "Reranking", group: "Retrieval", projects: ["DocRag"] },
-  { name: "Embeddings", group: "Retrieval", projects: ["DocRag", "Movie Intelligence Engine"] },
-  { name: "Python", group: "Data", projects: ["Veridex", "DocRag", "ML Capstone", "TG Transco", "Bluestock"] },
-  { name: "Pandas", group: "Data", projects: ["ML Capstone", "Bluestock", "ChemViz"] },
-  { name: "SQL", group: "Data", projects: ["Bluestock", "CensusGrid"] },
-  { name: "PostgreSQL", group: "Data", projects: ["Veridex", "SynergySpace", "CensusGrid", "Bluestock"] },
-  { name: "Redis", group: "Data", projects: ["CensusGrid"] },
-  { name: "Power BI", group: "Data", projects: ["Bluestock"] },
-  { name: "FastAPI", group: "Backend", projects: ["Veridex", "DocRag", "SynergySpace"] },
-  { name: "Flask", group: "Backend", projects: ["TG Transco"] },
-  { name: "Node.js", group: "Backend", projects: ["SynergySpace", "CensusGrid"] },
-  { name: "Django", group: "Backend", projects: ["ChemViz"] },
-  { name: "WebSockets", group: "Backend", projects: ["SynergySpace"] },
-  { name: "Auth / RBAC", group: "Backend", projects: ["SynergySpace", "CensusGrid", "Veridex"] },
-  { name: "Docker", group: "Backend", projects: [] },
-  { name: "TypeScript", group: "Frontend", projects: ["Veridex", "SynergySpace"] },
-  { name: "React", group: "Frontend", projects: ["CensusGrid", "SynergySpace"] },
-  { name: "Next.js", group: "Frontend", projects: ["Veridex", "SynergySpace"] },
+  // Languages
+  sk("Python", "Languages", ["Veridex", "DocRag", "SynergySpace", "Tabular ML Lab", "chart_detection", "Movie Intelligence Engine", "MT-Dynamics", "ESUA", "ChemViz", "TG Transco", "Bluestock"]),
+  sk("JavaScript", "Languages", ["CensusGrid", "SynergySpace", "ChemViz", "SentinelAI Guard", "CAMPWILD"]),
+  sk("TypeScript", "Languages", ["SynergySpace", "Veridex", "SentinelAI Guard"]),
+  sk("Java", "Languages", ["SecurityLogAnalyzer", "SentinelAI Guard"]),
+  sk("Dart", "Languages", ["OmniLife"]),
+  sk("C", "Languages", [], "Working knowledge; not tied to one of the projects on this page."),
+  sk("SQL", "Languages", ["Bluestock", "CensusGrid", "SynergySpace"]),
+  // ML & AI
+  sk("scikit-learn", "ML & AI", ["Tabular ML Lab", "chart_detection", "Veridex"]),
+  sk("XGBoost", "ML & AI", ["Veridex", "chart_detection"]),
+  sk("PyTorch", "ML & AI", ["DocRag", "chart_detection", "MT-Dynamics"]),
+  sk("OpenCV", "ML & AI", ["ESUA", "chart_detection", "MT-Dynamics"]),
+  sk("YOLOv8", "ML & AI", ["ESUA", "chart_detection"]),
+  sk("Image segmentation", "ML & AI", ["MT-Dynamics"], "A U-Net fine-tuned on pseudo-labels, alongside classical segmentation."),
+  sk("LangGraph", "ML & AI", ["Veridex", "DocRag"]),
+  sk("Hugging Face", "ML & AI", ["DocRag", "ESUA"]),
+  sk("Gemini API", "ML & AI", ["SynergySpace", "Veridex", "ChemViz", "SentinelAI Guard"]),
+  sk("Groq API", "ML & AI", ["Veridex", "OmniLife"]),
+  sk("Ollama", "ML & AI", ["DocRag"]),
+  sk("Demand forecasting", "ML & AI", ["TG Transco"]),
+  sk("TensorFlow", "ML & AI", [], "Working knowledge; not tied to one of the projects on this page."),
+  sk("LangChain", "ML & AI", [], "Working knowledge; not tied to one of the projects on this page."),
+  sk("Evolutionary algorithms", "ML & AI", ["Water network research"], "A current college research project; details aren't public yet."),
+  sk("CPU-optimized inference", "ML & AI", ["DocRag", "ESUA"], "Semantic and embedding caches in DocRag; a nano model with frame skipping in ESUA."),
+  sk("GPU inference (CUDA)", "ML & AI", ["DocRag", "chart_detection", "MT-Dynamics"], "fp16/fp32 selection and a V100 attention workaround in DocRag."),
+  sk("Remote GPU runs (SSH)", "ML & AI", ["DocRag"], "The 64-question DocRag benchmark was run on a remote GPU over SSH."),
+  // Retrieval
+  sk("RAG", "Retrieval", ["DocRag"]),
+  sk("Qdrant", "Retrieval", ["DocRag", "Veridex"]),
+  sk("ChromaDB", "Retrieval", ["Movie Intelligence Engine"]),
+  sk("Reranking", "Retrieval", ["DocRag"]),
+  sk("Embeddings", "Retrieval", ["DocRag", "Movie Intelligence Engine"]),
+  // Frontend
+  sk("React", "Frontend", ["SynergySpace", "Veridex", "CensusGrid", "ChemViz", "SentinelAI Guard"]),
+  sk("Next.js", "Frontend", ["SynergySpace", "Veridex"]),
+  sk("Tailwind CSS", "Frontend", ["CensusGrid", "SynergySpace", "Veridex"]),
+  sk("HTML", "Frontend", ["CAMPWILD", "ChemViz"]),
+  sk("CSS", "Frontend", ["CAMPWILD", "ChemViz", "CensusGrid"]),
+  sk("Flutter", "Frontend", ["OmniLife"]),
+  sk("Streamlit", "Frontend", ["Tabular ML Lab", "DocRag", "MT-Dynamics"]),
+  sk("Chart.js", "Frontend", ["ChemViz"]),
+  // Data & databases
+  sk("PostgreSQL", "Data & databases", ["Veridex", "SynergySpace", "CensusGrid", "Bluestock"]),
+  sk("SQLite", "Data & databases", ["DocRag", "ChemViz"]),
+  sk("MySQL", "Data & databases", [], "Working knowledge; not tied to one of the projects on this page."),
+  sk("Redis", "Data & databases", ["CensusGrid"]),
+  sk("Prisma", "Data & databases", ["SynergySpace", "CensusGrid"]),
+  sk("SQLAlchemy", "Data & databases", ["Veridex", "Bluestock"]),
+  sk("Alembic", "Data & databases", ["Veridex"]),
+  sk("Firebase", "Data & databases", ["SentinelAI Guard", "OmniLife"]),
+  sk("Pandas", "Data & databases", ["Tabular ML Lab", "chart_detection", "Movie Intelligence Engine", "ChemViz", "Bluestock"]),
+  sk("NumPy", "Data & databases", ["Tabular ML Lab", "chart_detection", "ESUA", "Movie Intelligence Engine", "DocRag"]),
+  sk("Power BI", "Data & databases", ["Bluestock"]),
+  // Backend
+  sk("FastAPI", "Backend", ["Veridex", "DocRag", "SynergySpace"]),
+  sk("Flask", "Backend", ["TG Transco"]),
+  sk("Node.js", "Backend", ["SynergySpace", "CensusGrid"]),
+  sk("Express", "Backend", ["SynergySpace", "CensusGrid"]),
+  sk("Django", "Backend", ["ChemViz"]),
+  sk("Spring Boot", "Backend", ["SentinelAI Guard"]),
+  sk("REST APIs", "Backend", ["Veridex", "DocRag", "SynergySpace", "CensusGrid", "ChemViz", "SentinelAI Guard"]),
+  sk("Socket.IO", "Backend", ["SynergySpace"]),
+  sk("JWT", "Backend", ["SynergySpace", "CensusGrid"]),
+  sk("RBAC", "Backend", ["SynergySpace", "CensusGrid", "SecurityLogAnalyzer"]),
+  sk("Rate limiting", "Backend", ["CensusGrid", "SynergySpace", "ChemViz"]),
+  sk("Stripe", "Backend", ["SynergySpace", "CensusGrid"]),
+  sk("Razorpay", "Backend", ["Veridex"]),
+  sk("Swagger", "Backend", ["CensusGrid"], "Hand-written OpenAPI docs; the FastAPI projects also expose /docs."),
+  // DevOps & tools
+  sk("Docker", "DevOps & tools", ["SynergySpace", "SentinelAI Guard"]),
+  sk("GitHub Actions", "DevOps & tools", GH),
+  sk("Git", "DevOps & tools", GH),
+  sk("GitHub", "DevOps & tools", GH),
+  sk("Postman", "DevOps & tools", ["CensusGrid"]),
+  sk("Vercel", "DevOps & tools", ["CensusGrid", "ChemViz", "SynergySpace", "Veridex"]),
+  sk("Render", "DevOps & tools", ["CensusGrid", "ChemViz", "SynergySpace", "Veridex"]),
+  sk("pytest", "DevOps & tools", ["Veridex", "DocRag", "ChemViz", "chart_detection", "ESUA", "Movie Intelligence Engine", "Tabular ML Lab", "SynergySpace"]),
+  sk("Jest", "DevOps & tools", ["SynergySpace"]),
+  sk("Jupyter", "DevOps & tools", ["Tabular ML Lab", "MT-Dynamics"]),
+  sk("Maven", "DevOps & tools", ["SentinelAI Guard"]),
+  sk("Chrome extensions", "DevOps & tools", ["SentinelAI Guard"]),
 ];
 
-export const CERTS = [
-  { title: "Supervised Machine Learning: Regression and Classification", issuer: "DeepLearning.AI / Stanford (Andrew Ng)", date: "June 2026", href: "https://coursera.org/verify/BWX0FSNP3FWS" },
-  { title: "Foundations of Data Science", issuer: "Google", date: "May 2026", href: "https://coursera.org/verify/A9OJ5UE2UJ4R" },
+export interface Build {
+  name: string;
+  kind: string;
+  text: string;
+  fact?: string;
+  stack: string[];
+  href?: string;
+}
+
+// Claims checked against each repo's README and code. Caveats are stated on purpose.
+export const BUILDS: Build[] = [
+  {
+    name: "chart_detection",
+    kind: "Computer vision",
+    text: "A framework for reading chart images: synthetic chart generation, hand-crafted features with classical classifiers, an EfficientNet-B0 CNN, and per-type parsers for bar, line, pie, scatter, histogram and box plots.",
+    fact: "Chart-type classifier: XGBoost 98.9% and EfficientNet-B0 99.9% on a 989-image test split. Labels come from filenames, so the split is easy. 95 tests.",
+    stack: ["Python", "PyTorch", "scikit-learn", "XGBoost", "OpenCV"],
+    href: "https://github.com/likhith1253/chart_detection",
+  },
+  {
+    name: "SentinelAI Guard",
+    kind: "Web security · Java",
+    text: "A Java 17 Spring Boot service that scores URLs with a plugin pipeline (domain age, TLS, typosquatting, a local blacklist and Gemini), with Firebase auth, a Chrome extension that blocks risky pages, and a Docker build.",
+    fact: "Plugin scores are weighted into one risk score. No benchmark published.",
+    stack: ["Java", "Spring Boot", "Docker", "Firebase", "Gemini API"],
+    href: "https://github.com/likhith1253/SentinelAI-Guard",
+  },
+  {
+    name: "MT-Dynamics",
+    kind: "Image segmentation",
+    text: "Microtubule tracing on fluorescence video: classical segmentation, a U-Net fine-tuned on pseudo-labels, tracking, and growth, shrink, catastrophe and rescue statistics, with a Streamlit dashboard. Built for a 2026 research programme.",
+    fact: "U-Net IoU 0.676 on held-out synthetic frames; real video has no ground truth. Repository is private for now.",
+    stack: ["Python", "PyTorch", "OpenCV", "Streamlit"],
+  },
+  {
+    name: "Movie Intelligence Engine",
+    kind: "Semantic search",
+    text: "A movie recommender that embeds 4,800 TMDb films into ChromaDB and answers a title or a free-text description, with year, rating and runtime filters.",
+    fact: "Query latency about 205–226 ms mean on a laptop CPU, including embedding the query. Recommendation quality isn't scored.",
+    stack: ["Python", "ChromaDB", "MiniLM embeddings"],
+    href: "https://github.com/likhith1253/Movie_Recommendation_System",
+  },
+  {
+    name: "ESUA",
+    kind: "Computer vision",
+    text: "Scene understanding on webcam or image input: YOLOv8n detects objects and a transparent rule layer flags hazards such as a cup near a laptop and explains why.",
+    fact: "About 0.27 s per image on CPU. No labelled evaluation set, so no accuracy is claimed.",
+    stack: ["Python", "YOLOv8", "OpenCV"],
+    href: "https://github.com/likhith1253/ESUA",
+  },
+  {
+    name: "SecurityLogAnalyzer",
+    kind: "Systems · Java",
+    text: "A Java console app that scans web-server access logs, scores source IPs, blacklists them and writes a forensic report, with a hand-written red-black tree for time-range and IP queries and PBKDF2 role-based logins.",
+    fact: "No third-party libraries. 11 tests.",
+    stack: ["Java", "Red-black tree", "PBKDF2"],
+    href: "https://github.com/likhith1253/SecurityLogAnalyzer",
+  },
+  {
+    name: "ChemViz",
+    kind: "Full stack",
+    text: "Upload equipment readings as a CSV and get statistics, charts, a PDF report and AI maintenance notes. Django REST API with token auth, a React web app and a PyQt desktop client.",
+    stack: ["Django", "React", "PyQt", "Gemini API"],
+    href: "https://chemicalanalyzer.vercel.app",
+  },
+  {
+    name: "OmniLife",
+    kind: "Team project · Flutter",
+    text: "A cross-platform Flutter app with an AI assistant, built as a team of four.",
+    fact: "My part: pull requests merged into the team repository.",
+    stack: ["Flutter", "Dart", "Firebase", "Groq API"],
+    href: "https://github.com/likhith1253/OmniLife",
+  },
 ];
+
+export interface Cert {
+  title: string;
+  issuer: string;
+  partner?: string;
+  instructor?: string;
+  date: string;
+  category: string;
+  description: string;
+  topics: string[];
+  href: string;
+}
+
+// From the credentials themselves (Coursera verification links) and the previous version of this site.
+export const CERTS: Cert[] = [
+  {
+    title: "Supervised Machine Learning: Regression and Classification",
+    issuer: "DeepLearning.AI",
+    partner: "Stanford University",
+    instructor: "Andrew Ng",
+    date: "June 2026",
+    category: "Machine learning",
+    description: "Foundational supervised learning: regression and classification models, how to evaluate them, and the practical workflow around them.",
+    topics: ["Linear regression", "Logistic regression", "Classification", "Model evaluation", "scikit-learn workflows"],
+    href: "https://coursera.org/verify/BWX0FSNP3FWS",
+  },
+  {
+    title: "Foundations of Data Science",
+    issuer: "Google",
+    date: "May 2026",
+    category: "Data science",
+    description: "Analytical thinking, statistical reasoning, data preparation and interpretation, and a structured approach to getting insight from data.",
+    topics: ["Data analysis", "Data preparation", "Statistical thinking", "Data interpretation"],
+    href: "https://coursera.org/verify/A9OJ5UE2UJ4R",
+  },
+];
+
+// A college research project; the details are deliberately not public.
+export const RESEARCH = {
+  title: "Water distribution network optimization",
+  status: "Currently researching",
+  summary:
+    "A college research project on optimizing water distribution networks: a trajectory-learning evaluation problem within evolutionary-algorithms research.",
+  note: "Details aren't public yet.",
+  tags: ["Evolutionary algorithms", "Optimization", "Trajectory learning"],
+};
 
 export const OPEN_SOURCE = [
   { name: "collective/icalendar", text: "Merged pull request #1116, improving RFC 5545 compliance.", href: "https://github.com/collective/icalendar/pull/1116" },

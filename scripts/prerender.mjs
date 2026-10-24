@@ -8,13 +8,13 @@ import { pathToFileURL } from "node:url";
 const root = path.resolve(import.meta.dirname, "..");
 const dist = path.join(root, "dist");
 const { render, data } = await import(pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href);
-const { SITE, EDUCATION, EXPERIENCE, PROJECTS, SKILLS, CERTS, OPEN_SOURCE, ALSO_BUILT, RECOGNITION } = data;
+const { SITE, EDUCATION, EXPERIENCE, PROJECTS, SKILLS, CERTS, OPEN_SOURCE, BUILDS, RECOGNITION, RESEARCH, GROUPS } = data;
 const today = new Date().toISOString().slice(0, 10);
 const url = SITE.url;
 const fmt = (m) => `${m.decimals ? m.value.toFixed(m.decimals) : m.value.toLocaleString("en-US")}${m.suffix || ""} ${m.label}`;
 const codeLink = (p) => p.links.find((l) => l.label === "Code")?.href;
 const liveLink = (p) => p.links.find((l) => l.label !== "Code")?.href;
-const skillNames = [...new Set(SKILLS.map((s) => s.name))];
+const skillNames = [...new Set([...SKILLS.map((s) => s.name), ...RESEARCH.tags])];
 
 // ---------- JSON-LD ----------
 const person = {
@@ -43,8 +43,10 @@ const person = {
   hasCredential: CERTS.map((c) => ({
     "@type": "EducationalOccupationalCredential",
     name: c.title,
+    description: c.description,
     credentialCategory: "certificate",
     recognizedBy: { "@type": "Organization", name: c.issuer },
+    about: c.topics.join(", "),
     url: c.href,
   })),
 };
@@ -82,9 +84,21 @@ ${PROJECTS.map((p) => `- [${p.name}](${codeLink(p) || liveLink(p)}): ${p.kind}. 
 
 ${EXPERIENCE.map((r) => `- ${r.title}, ${r.org} (${r.period}, ${r.location}): ${r.summary} Tools: ${r.tools.join(", ")}.`).join("\n")}
 
+## More projects
+
+${BUILDS.map((b) => `- [${b.name}](${b.href}): ${b.kind}. ${b.text}${b.fact ? " " + b.fact + "." : ""}`).join("\n")}
+
+## Currently
+
+- ${RESEARCH.title}: ${RESEARCH.summary} (${RESEARCH.tags.join(", ")}). ${RESEARCH.note}
+
+## Certifications
+
+${CERTS.map((c) => `- ${c.title}, ${c.issuer} (${c.date}): ${c.href}`).join("\n")}
+
 ## Skills
 
-${[...new Set(SKILLS.map((s) => s.group))].map((g) => `- ${g}: ${SKILLS.filter((s) => s.group === g).map((s) => s.name).join(", ")}`).join("\n")}
+${GROUPS.map((g) => `- ${g}: ${SKILLS.filter((s) => s.group === g).map((s) => s.name).join(", ")}`).join("\n")}
 
 ## Optional
 
@@ -134,8 +148,12 @@ Results: ${p.metrics.map(fmt).join("; ")}.${p.metricNote ? " " + p.metricNote : 
 Stack: ${p.stack.join(", ")}
 Links: ${p.links.map((l) => `${l.label}: ${l.href}`).join(" · ")}`).join("\n\n")}
 
-### Other projects
-${ALSO_BUILT.map((a) => `- ${a.name}: ${a.text} (${a.href})`).join("\n")}
+### More projects
+${BUILDS.map((b) => `- ${b.name} (${b.kind}): ${b.text}${b.fact ? " " + b.fact + "." : ""} Stack: ${b.stack.join(", ")}. ${b.href}`).join("\n")}
+
+## Currently researching
+
+${RESEARCH.title}. ${RESEARCH.summary} ${RESEARCH.note} Tags: ${RESEARCH.tags.join(", ")}.
 
 ## Skills (with the projects that use them)
 
@@ -147,7 +165,7 @@ ${EDUCATION.degree}, ${EDUCATION.school}. ${EDUCATION.expected}. ${EDUCATION.cgp
 
 ## Certifications
 
-${CERTS.map((c) => `- ${c.title}, ${c.issuer} (${c.date}): ${c.href}`).join("\n")}
+${CERTS.map((c) => `- ${c.title}, ${c.issuer}${c.partner ? " / " + c.partner : ""}${c.instructor ? ", taught by " + c.instructor : ""} (${c.date}): ${c.description} Topics: ${c.topics.join(", ")}. Verify: ${c.href}`).join("\n")}
 
 ## Open source and recognition
 
@@ -182,9 +200,13 @@ const resume = {
     return { name: r.org, position: r.title, location: r.location, startDate: toISO(a), endDate: toISO(b), summary: r.summary, highlights: r.bullets };
   }),
   education: [{ institution: EDUCATION.school, area: "Computer Science and Engineering", studyType: "B.Tech", endDate: "2028-05", score: EDUCATION.cgpa.replace("CGPA ", ""), courses: EDUCATION.coursework }],
-  certificates: CERTS.map((c) => ({ name: c.title, issuer: c.issuer, url: c.href })),
-  skills: [...new Set(SKILLS.map((s) => s.group))].map((g) => ({ name: g, keywords: SKILLS.filter((s) => s.group === g).map((s) => s.name) })),
-  projects: PROJECTS.map((p) => ({ name: p.name, description: p.oneLiner, highlights: [...p.built, `Results: ${p.metrics.map(fmt).join("; ")}`], keywords: p.stack, url: codeLink(p) || liveLink(p) })),
+  certificates: CERTS.map((c) => ({ name: c.title, issuer: c.issuer, date: c.date, url: c.href })),
+  interests: [{ name: RESEARCH.title, keywords: RESEARCH.tags }],
+  skills: GROUPS.map((g) => ({ name: g, keywords: SKILLS.filter((s) => s.group === g).map((s) => s.name) })),
+  projects: [
+    ...PROJECTS.map((p) => ({ name: p.name, description: p.oneLiner, highlights: [...p.built, `Results: ${p.metrics.map(fmt).join("; ")}`], keywords: p.stack, url: codeLink(p) || liveLink(p) })),
+    ...BUILDS.map((b) => ({ name: b.name, description: b.text, highlights: b.fact ? [b.fact] : [], keywords: b.stack, url: b.href })),
+  ],
   meta: { canonical: `${url}profile.json`, lastModified: today },
 };
 
