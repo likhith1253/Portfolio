@@ -334,8 +334,8 @@ export const BUILDS: Build[] = [
   {
     name: "SentinelAI Guard",
     kind: "Web security · Java",
-    text: "A Java 17 Spring Boot service that scores URLs with a plugin pipeline (domain age, TLS, typosquatting, a local blacklist and Gemini), with Firebase auth, a Chrome extension that blocks risky pages, and a Docker build.",
-    fact: "Plugin scores are weighted into one risk score. No benchmark published.",
+    text: "A Java 17 Spring Boot service that scores URLs with a plugin pipeline (domain age, TLS, typosquatting, a local blacklist, and Gemini as a tiebreaker), with Firebase auth, a Docker build, and mitmproxy and Chrome-extension clients.",
+    fact: "Weighted plugin scores decide allow, warn or block. Domain age is simulated and the clients aren't wired to the API yet.",
     stack: ["Java", "Spring Boot", "Docker", "Firebase", "Gemini API"],
     href: "https://github.com/likhith1253/SentinelAI-Guard",
   },
