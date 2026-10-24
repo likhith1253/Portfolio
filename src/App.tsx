@@ -224,10 +224,13 @@ export default function App() {
           <div className="hero-row">
             <p className="hero-lede">{SITE.headline}</p>
             <div className="hero-side">
-              <div className="hero-meta mono">
-                <span className="status"><i aria-hidden="true" /> {SITE.lookingFor}</span>
-                <span style={{ color: "var(--muted)" }}>{SITE.location}</span>
-              </div>
+              <a className="hero-id" href="#about" aria-label="About Likhith: jump to the About section">
+                <img className="avatar" src="/images/avatar.jpg" width={240} height={240} alt="Portrait of Likhith Ponnada" fetchPriority="high" />
+                <span className="hero-id-text mono">
+                  <span className="status"><i aria-hidden="true" /> {SITE.lookingFor}</span>
+                  <span style={{ color: "var(--muted)" }}>{SITE.location}</span>
+                </span>
+              </a>
               <div className="btns">
                 <a className="btn primary" href="#work">See the work <span className="arrow" aria-hidden="true">→</span></a>
                 <a className="btn" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
