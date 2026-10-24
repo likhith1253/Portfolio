@@ -22,6 +22,7 @@ const VIZ: Record<string, () => ReactNode> = {
 const NAV = [
   { href: "#work", label: "work" },
   { href: "#experience", label: "experience" },
+  { href: "#about", label: "about" },
   { href: "#skills", label: "skills" },
   { href: "#ask", label: "ask" },
   { href: "#contact", label: "contact" },
@@ -233,7 +234,7 @@ export default function App() {
                 <a className="btn" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
               </div>
               <span className="mono" style={{ color: "var(--dim)" }} aria-hidden="true">
-                epoch <span ref={epochRef}>120</span>/120 · loss <span ref={lossRef}>0.077</span> · move to query, click to retrain
+                epoch <span ref={epochRef}>120</span>/120 · loss <span ref={lossRef}>0.077</span> · move to query · hold to widen · click to retrain
               </span>
             </div>
           </div>
@@ -304,10 +305,48 @@ export default function App() {
           </div>
         </section>
 
+        <section id="about" className="section" aria-label="About">
+          <div className="wrap">
+            <SecHead n="03" label="About" title={["Who's", { em: "behind the systems." }]} />
+            <div className="about">
+              <figure className="portrait" data-reveal>
+                <img
+                  src="/images/profile.jpg"
+                  width={836}
+                  height={1019}
+                  loading="lazy"
+                  decoding="async"
+                  alt="Likhith Ponnada at his desk with code open on two monitors, wearing a dark green sweatshirt."
+                />
+                <i className="corner tl" aria-hidden="true" /><i className="corner br" aria-hidden="true" />
+                <figcaption className="mono">likhith · {SITE.location.toLowerCase()}</figcaption>
+              </figure>
+              <div className="about-body" data-reveal>
+                <p className="about-lede">{SITE.intro}</p>
+                <p>
+                  The work around the model matters as much as the model: evaluation harnesses, permission checks, test suites,
+                  and write-ups that say plainly what didn't work. In 2026 that meant two internships and five projects
+                  with working backends, tests and published results.
+                </p>
+                <ul className="fact-list">
+                  <li><span>Studying</span><span>{EDUCATION.degree.replace("B.Tech in ", "B.Tech · ")}, {EDUCATION.school}</span></li>
+                  <li><span>Graduating</span><span>{EDUCATION.expected.replace("Expected ", "")}</span></li>
+                  <li><span>Based in</span><span>{SITE.location}</span></li>
+                  <li><span>Looking for</span><span>AI/ML and software engineering internships</span></li>
+                </ul>
+                <div className="btns" style={{ marginTop: 24 }}>
+                  <a className="btn primary" href={`mailto:${SITE.email}`}>Say hello <span className="arrow" aria-hidden="true">→</span></a>
+                  <a className="btn" href={SITE.resume} target="_blank" rel="noopener">Résumé (PDF)</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="skills" className="section" aria-label="Skills">
           <div className="wrap">
             <SecHead
-              n="03" label="Skills"
+              n="04" label="Skills"
               title={["What I work with,", { em: "mapped by where I've used it." }]}
               sub="Bigger nodes show up in more projects. Pick one to see where it's used and what it travels with."
             />
@@ -318,7 +357,7 @@ export default function App() {
         <section id="ask" className="section" aria-label="Ask this page">
           <div className="wrap">
             <SecHead
-              n="04" label="Ask"
+              n="05" label="Ask"
               title={["Ask this page", { em: "a question." }]}
               sub="A small BM25 index over everything on this site. It retrieves the best passages and cites the section they came from. No language model, no server."
             />
@@ -328,7 +367,7 @@ export default function App() {
 
         <section id="more" className="section" aria-label="Other projects, education and more">
           <div className="wrap">
-            <SecHead n="05" label="Also" title={["Smaller builds,", { em: "school and the rest." }]} />
+            <SecHead n="06" label="Also" title={["Smaller builds,", { em: "school and the rest." }]} />
             <div className="cards3">
               {ALSO_BUILT.map((a) => (
                 <a key={a.name} className="card" href={a.href} target="_blank" rel="noopener noreferrer" data-reveal>
@@ -363,7 +402,7 @@ export default function App() {
 
       <footer id="contact" className="contact" aria-label="Contact">
         <div className="wrap">
-          <span className="label">06 / Contact</span>
+          <span className="label">07 / Contact</span>
           <Words as="h2" className="contact-title" parts={["Building something", { em: "that has to work?" }]} />
           <a className="big-mail" href={`mailto:${SITE.email}`}>{SITE.email}</a>
           <div className="btns">
