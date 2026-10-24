@@ -10,7 +10,12 @@ const CLUSTERS = [
   { label: "Backend", color: [236, 234, 228], x: 0.76, y: 0.66, spread: 0.07 },
   { label: "Frontend", color: [255, 90, 60], x: 0.92, y: 0.16, spread: 0.045 },
 ];
-const K = 10;
+// The query is a radius search: k is however many points fall inside the circle,
+// so it is small in sparse space and large inside a dense cluster. Holding still
+// widens the circle (k grows); moving resets it.
+const R_MIN = 52;
+const R_MAX = 210;
+const MAX_LINES = 16;
 const TRAIN_SECONDS = 3.2;
 
 interface Pt { x: number; y: number; sx: number; sy: number; tx: number; ty: number; c: number; ph: number; r: number; }
@@ -32,9 +37,10 @@ export default function EmbeddingField({ onStats }: { onStats?: (epoch: number, 
     let w = 0, h = 0, dpr = 1;
     let pts: Pt[] = [];
     let trainStart = performance.now();
-    const mouse = { x: -9999, y: -9999, active: false };
+    const mouse = { x: -9999, y: -9999, active: false, px: -9999, py: -9999, dwell: 0 };
     let raf = 0;
     let visible = true;
+    let lastFrame = performance.now();
 
     const mobile = () => w < 760;
 
@@ -94,14 +100,22 @@ export default function EmbeddingField({ onStats }: { onStats?: (epoch: number, 
         q.y = q.sy + (q.ty - q.sy) * e + jy;
       }
 
-      // nearest neighbours to the pointer
+      // radius search around the pointer
+      let radius = R_MIN;
       let nn: { q: Pt; d: number }[] = [];
       if (mouse.active) {
+        const moved = Math.hypot(mouse.x - mouse.px, mouse.y - mouse.py);
+        mouse.px = mouse.x; mouse.py = mouse.y;
+        const dt = Math.min(0.25, (now - lastFrame) / 1000);
+        mouse.dwell = moved > 3 ? Math.max(0, mouse.dwell - dt * 4) : Math.min(2.4, mouse.dwell + dt);
+        radius = R_MIN + (R_MAX - R_MIN) * (mouse.dwell / 2.4);
         for (const q of pts) {
           const d = (q.x - mouse.x) ** 2 + (q.y - mouse.y) ** 2;
-          if (nn.length < K) { nn.push({ q, d }); nn.sort((a, b) => a.d - b.d); }
-          else if (d < nn[K - 1].d) { nn[K - 1] = { q, d }; nn.sort((a, b) => a.d - b.d); }
+          if (d <= radius * radius) nn.push({ q, d });
         }
+        nn.sort((x, y) => x.d - y.d);
+      } else {
+        mouse.dwell = 0;
       }
       const hot = new Set(nn.map((n) => n.q));
 
@@ -114,21 +128,39 @@ export default function EmbeddingField({ onStats }: { onStats?: (epoch: number, 
         ctx.fill();
       }
 
-      if (nn.length) {
-        nn.forEach((n, i) => {
-          ctx.strokeStyle = `rgba(200,255,62,${0.75 - i * 0.06})`;
-          ctx.lineWidth = 1;
+      if (mouse.active) {
+        // the search circle
+        ctx.strokeStyle = "rgba(200,255,62,0.28)";
+        ctx.setLineDash([3, 5]);
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(mouse.x, mouse.y, radius, 0, Math.PI * 2); ctx.stroke();
+        ctx.setLineDash([]);
+        nn.slice(0, MAX_LINES).forEach((n, i) => {
+          ctx.strokeStyle = `rgba(200,255,62,${Math.max(0.18, 0.75 - i * 0.04)})`;
           ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(n.q.x, n.q.y); ctx.stroke();
         });
         ctx.strokeStyle = "rgba(200,255,62,0.9)";
         ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 9, 0, Math.PI * 2); ctx.stroke();
-        // majority cluster of the neighbours
-        const votes = new Map<number, number>();
-        nn.forEach((n) => votes.set(n.q.c, (votes.get(n.q.c) || 0) + 1));
-        const top = [...votes.entries()].sort((a, b) => b[1] - a[1])[0][0];
         ctx.font = "500 11.5px 'JetBrains Mono Variable', monospace";
         ctx.fillStyle = "rgba(200,255,62,0.95)";
-        ctx.fillText(`query · k=${K} → ${CLUSTERS[top].label}`, mouse.x + 16, mouse.y - 12);
+        let text: string;
+        if (nn.length === 0) {
+          text = "query · k=0 · nothing in range";
+        } else {
+          // majority cluster of everything inside the circle
+          const votes = new Map<number, number>();
+          nn.forEach((n) => votes.set(n.q.c, (votes.get(n.q.c) || 0) + 1));
+          const [topC, topN] = [...votes.entries()].sort((a, b) => b[1] - a[1])[0];
+          text = `query · k=${nn.length} → ${CLUSTERS[topC].label} ${Math.round((topN / nn.length) * 100)}%`;
+        }
+        const tw = ctx.measureText(text).width;
+        const tx = Math.max(8, Math.min(mouse.x + 16, w - tw - 20));
+        const ty = Math.max(30, mouse.y - 14);
+        ctx.fillStyle = "rgba(7,8,11,0.88)";
+        ctx.beginPath(); ctx.roundRect(tx - 8, ty - 15, tw + 16, 22, 11); ctx.fill();
+        ctx.strokeStyle = "rgba(200,255,62,0.35)"; ctx.setLineDash([]); ctx.stroke();
+        ctx.fillStyle = "rgba(200,255,62,0.98)";
+        ctx.fillText(text, tx, ty);
       }
 
       // cluster labels fade in once training has converged
@@ -151,6 +183,7 @@ export default function EmbeddingField({ onStats }: { onStats?: (epoch: number, 
         onStats(epoch, loss);
       }
 
+      lastFrame = now;
       if (!reduced && visible) raf = requestAnimationFrame(frame);
     };
 

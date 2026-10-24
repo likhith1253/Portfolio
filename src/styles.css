@@ -131,7 +131,7 @@ button { font: inherit; color: inherit; }
 @keyframes blink { 50% { opacity: 0; } }
 .hero h1 {
   font-family: var(--display); font-weight: 700; letter-spacing: -0.045em; line-height: 0.88;
-  font-size: clamp(56px, 13vw, 196px); margin: 0 0 28px;
+  font-size: clamp(52px, 10.8vw, 164px); margin: 0 0 28px;
 }
 .hero h1 .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .hero h1 .line > span { display: inline-block; }
@@ -330,3 +330,17 @@ a.card:hover { border-color: var(--line-2); transform: translateY(-3px); }
   font-size: clamp(44px, 7vw, 112px); margin: 18px 0 0; max-width: 14ch;
 }
 .contact h2 em { font-style: normal; color: var(--acid); }
+
+/* ---------- about ---------- */
+.about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: center; }
+.portrait { position: relative; margin: 0; border-radius: 22px; overflow: hidden; border: 1px solid var(--line-2); background: var(--panel); max-width: 460px; }
+.portrait img { width: 100%; height: auto; aspect-ratio: 836 / 1019; object-fit: cover; filter: saturate(0.92) contrast(1.03); transition: transform 1.2s var(--ease), filter 0.6s; }
+.portrait:hover img { transform: scale(1.035); filter: saturate(1.05) contrast(1.05); }
+.portrait::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,8,11,0.7), rgba(7,8,11,0) 38%); pointer-events: none; }
+.portrait figcaption { position: absolute; left: 18px; bottom: 16px; z-index: 2; color: var(--text); }
+.corner { position: absolute; width: 26px; height: 26px; z-index: 2; border: 2px solid var(--acid); pointer-events: none; }
+.corner.tl { top: 14px; left: 14px; border-right: 0; border-bottom: 0; border-radius: 6px 0 0 0; }
+.corner.br { bottom: 14px; right: 14px; border-left: 0; border-top: 0; border-radius: 0 0 6px 0; }
+.about-body p { color: var(--muted); margin: 0 0 18px; max-width: 58ch; }
+.about-body .about-lede { color: var(--text); font-size: clamp(20px, 2vw, 26px); line-height: 1.4; letter-spacing: -0.01em; max-width: 36ch; }
+@media (max-width: 860px) { .about { grid-template-columns: 1fr; } .portrait { max-width: 340px; } }
