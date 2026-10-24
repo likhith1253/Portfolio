@@ -36,8 +36,8 @@ const person = {
   hasOccupation: EXPERIENCE.map((r) => ({
     "@type": "Occupation",
     name: `${r.title}, ${r.org}`,
-    description: `${r.period}. ${r.summary} ${r.bullets.join(" ")}`,
-    occupationLocation: { "@type": "City", name: "Hyderabad" },
+    description: `${r.period} (${r.location}). ${r.summary} ${r.bullets.join(" ")}`,
+    ...(/remote/i.test(r.location) ? {} : { occupationLocation: { "@type": "City", name: "Hyderabad" } }),
     skills: r.tools.join(", "),
   })),
   hasCredential: CERTS.map((c) => ({

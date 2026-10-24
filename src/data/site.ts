@@ -59,7 +59,7 @@ export const EXPERIENCE: Role[] = [
     org: "Bluestock Fintech Pvt. Ltd.",
     title: "Data Analyst Intern",
     period: "April 2026 – June 2026",
-    location: "Hyderabad, India",
+    location: "Remote",
     summary: "Financial data engineering and analytics on public mutual-fund datasets.",
     bullets: [
       "Built ETL pipelines (Python, Pandas, SQLAlchemy) over 46,000+ mutual fund NAV records and 32,000+ investor transactions.",
